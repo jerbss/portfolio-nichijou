@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Animação V2 - Nichijou</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: sans-serif;
+            height: 300vh; /* Altura para 3 "telas" (intro + 2 desafios) */
+        }
+
+        /* O container fixo que centraliza toda a animação */
+        .scrolly-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Estilo base para cada personagem */
+        .character {
+            /* Tamanho ajustado para caber na viewport, mantendo proporção 16:9 */
+            max-width: 100vw;
+            max-height: 100vh;
+            width: auto;
+            height: auto;
+            position: absolute; /* Permite empilhar as imagens */
+            top: 50%; /* centraliza verticalmente dentro do container fixo */
+            /* transform será aplicado via CSS específico de cada imagem e JavaScript */
+            opacity: 0; /* Começam invisíveis */
+            visibility: hidden; /* Escondidos para não interferir */
+            transition: transform 0.35s ease-out, opacity 0.3s ease-out, visibility 0.3s;
+        }
+
+        /* Classe que torna o personagem ativo visível e pronto para animar */
+        .character.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Posições específicas para cada personagem */
+        /* Ambas as imagens centralizadas */
+        #char1, #char2 {
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%) scale(1);
+            /* transform-origin será calculado dinamicamente via JS */
+        }
+
+        /* Espaço para o conteúdo do desafio */
+        .challenge-content {
+            height: 100vh; /* Cada seção de conteúdo ocupa uma tela inteira */
+            padding-top: 100vh; /* Empurra o conteúdo para baixo */
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CONTAINER DA ANIMAÇÃO -->
+    <div class="scrolly-container">
+        <!-- ATENÇÃO: Nomes dos arquivos corrigidos -->
+        <img id="char1" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 1">
+        <img id="char2" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 2">
+    </div>
+
+    <!-- SEÇÕES DE CONTEÚDO (invisíveis no início) -->
+    <section class="challenge-content" id="content1"></section>
+    <section class="challenge-content" id="content2"></section>
+
+
+    <script>
+        // Seleciona os elementos
+        const characters = [
+            document.getElementById('char1'),
+            document.getElementById('char2')
+        ];
+        
+        // Configurações de zoom para cada personagem
+        // Dimensões originais das imagens: 1920x1080
+        // Coordenadas de foco (X, Y) em pixels na imagem original
+        const zoomConfig = [
+            { x: 690, y: 660 },   // char1: foco no ponto especificado
+            { x: 1200, y: 500 }   // char2: foco no ponto especificado
+        ];
+        
+        const imageOriginalWidth = 1920;
+        const imageOriginalHeight = 1080;
+        
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const screenHeight = window.innerHeight;
+
+            // Determina qual seção está ativa com base na rolagem
+            const activeSectionIndex = Math.floor(scrollY / screenHeight);
+            
+            // **CORREÇÃO:** Garante que apenas o personagem da seção ativa seja visível
+            // Remove imediatamente a classe 'active' de todos os personagens, depois adiciona ao correto
+            // Isso previne que ambas imagens apareçam ao mesmo tempo ao rolar para cima
+            characters.forEach((char, index) => {
+                char.classList.remove('active');
+            });
+            
+            // Ativa apenas o personagem correspondente à seção atual
+            if (characters[activeSectionIndex]) {
+                characters[activeSectionIndex].classList.add('active');
+            }
+
+            // Se não houver personagem para a seção atual, saia da função
+            const activeCharacter = characters[activeSectionIndex];
+            if (!activeCharacter) return;
+            
+            // --- CÁLCULO DA ANIMAÇÃO COM ZOOM DIRECIONADO ---
+            
+            // Calcula o progresso da rolagem DENTRO da seção atual (de 0 a 1)
+            const progress = (scrollY % screenHeight) / screenHeight;
+
+            // **ZOOM AINDA MAIOR:** multiplicador aumentado para 5
+            // (1 + progress * 5) => até 6x o tamanho original
+            const scale = 1 + progress * 5;
+            
+            // **OPACIDADE QUASE INSTANTÂNEA:** A imagem fica 100% visível durante 95% do scroll
+            // e desaparece rapidamente nos últimos 5% (transição quase instantânea)
+            const opacity = 1 - Math.max(0, (progress - 0.95) / 0.05);
+
+            // --- CÁLCULO DO ZOOM DIRECIONADO ---
+            // Pega as dimensões atuais da imagem renderizada na tela
+            const imgRect = activeCharacter.getBoundingClientRect();
+            const currentImgWidth = imgRect.width;
+            const currentImgHeight = imgRect.height;
+            
+            // Calcula a escala entre a imagem original e a renderizada
+            const scaleX = currentImgWidth / imageOriginalWidth;
+            const scaleY = currentImgHeight / imageOriginalHeight;
+            
+            // Pega o ponto de foco para esta imagem
+            const focusConfig = zoomConfig[activeSectionIndex];
+            
+            // Converte as coordenadas do ponto de foco para o tamanho renderizado
+            const focusX = focusConfig.x * scaleX;
+            const focusY = focusConfig.y * scaleY;
+            
+            // Calcula a porcentagem do ponto de foco em relação ao tamanho da imagem
+            // (0% a 100% em cada eixo)
+            const focusXPercent = (focusX / currentImgWidth) * 100;
+            const focusYPercent = (focusY / currentImgHeight) * 100;
+            
+            // Define o transform-origin para o ponto de foco específico
+            activeCharacter.style.transformOrigin = `${focusXPercent}% ${focusYPercent}%`;
+
+            // Aplica as transformações apenas ao personagem ativo
+            // translateX(-50%) e translateY(-50%) mantêm a imagem centralizada
+            activeCharacter.style.transform = `translateX(-50%) translateY(-50%) scale(${scale})`;
+            activeCharacter.style.opacity = opacity;
+        });
+    </script>
+
+</body>
+</html>
