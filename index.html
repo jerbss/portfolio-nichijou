@@ -10,7 +10,7 @@
             padding: 0;
             background-color: #f0f0f0;
             font-family: sans-serif;
-            height: 300vh; /* Altura para 3 "telas" (intro + 2 desafios) */
+            /* Altura dinâmica: calculada automaticamente pelo conteúdo */
         }
 
         /* O container fixo que centraliza toda a animação */
@@ -47,119 +47,1209 @@
         }
 
         /* Posições específicas para cada personagem */
-        /* Ambas as imagens centralizadas */
-        #char1, #char2 {
+        /* Todas as imagens centralizadas */
+        #char1, #char2, #char3, #char4, #char5, #char6, #char7, #char8, #char9, #char10 {
             left: 50%;
             transform: translateX(-50%) translateY(-50%) scale(1);
             /* transform-origin será calculado dinamicamente via JS */
         }
 
-        /* Espaço para o conteúdo do desafio */
-        .challenge-content {
-            height: 100vh; /* Cada seção de conteúdo ocupa uma tela inteira */
-            padding-top: 100vh; /* Empurra o conteúdo para baixo */
+        /* === SEÇÕES DE TRANSIÇÃO DE PERSONAGEM === */
+        .character-transition {
+            height: 100vh;
+            min-height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* === SEÇÃO DE INTRODUÇÃO === */
+        .intro-section {
+            height: 100vh;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 10;
+        }
+
+        .intro-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin: 0 0 1.5rem 0;
+            line-height: 1.2;
+            max-width: 800px;
+        }
+
+        .intro-section p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #666;
+            line-height: 1.8;
+            margin: 0 0 3rem 0;
+            max-width: 700px;
+        }
+
+        .scroll-prompt {
+            font-size: 0.95rem;
+            color: #999;
+            font-weight: 500;
+            animation: bounce 2s ease-in-out infinite;
+            margin-top: 2rem;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* === SEÇÕES DE DESAFIO === */
+        .challenge-section {
+            min-height: 120vh;
+            height: auto;
+            padding: 100px 40px 80px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 10;
+            /* Fundo com grid de papel quadriculado */
+            background-color: #ffffff;
+            background-image: 
+                linear-gradient(rgba(200, 200, 200, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(200, 200, 200, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
             opacity: 0;
-            transition: opacity 0.5s;
+            transition: opacity 0.6s ease-out;
+        }
+
+        .challenge-section.visible {
+            opacity: 1;
+        }
+
+        .challenge-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .challenge-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .challenge-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            line-height: 1.2;
+            /* A cor será aplicada via JavaScript baseada no data-color */
+        }
+
+        .challenge-subtitle {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #555;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .challenge-content-box {
+            max-width: 700px;
+            margin: 0 auto 60px;
+            padding: 2rem 2.5rem;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 2px solid #f0f0f0;
+            line-height: 1.8;
+        }
+
+        .challenge-content-box p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #555;
+            margin: 0 0 20px 0;
+        }
+
+        .challenge-content-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .challenge-gallery {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .challenge-gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .challenge-gallery img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Animação de entrada para seções de conteúdo */
+        .challenge-section {
+            opacity: 0;
+            transition: opacity 0.6s ease-out;
+        }
+
+        .challenge-section.visible {
+            opacity: 1;
+        }
+
+        /* Responsividade para mobile */
+        @media (max-width: 768px) {
+            .challenge-title {
+                font-size: 2rem;
+            }
+            
+            .challenge-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .challenge-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* === MENU DE NAVEGAÇÃO === */
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background-color: #333;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .menu-button:hover {
+            transform: scale(1.1);
+            background-color: #555;
+        }
+
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.3s ease-out;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .menu-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            background-color: #555;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            z-index: 10000;
+        }
+
+        .menu-close:hover {
+            background-color: #777;
+            transform: rotate(90deg);
+        }
+
+        .menu-container {
+            max-width: 900px;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            justify-items: center;
+        }
+
+        .menu-list li {
+            width: 100%;
+        }
+
+        .menu-list a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .menu-list a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .menu-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+
+        .menu-text {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .menu-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* === SEÇÃO DE CONTATO === */
+        .contact-section {
+            min-height: 100vh;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 10;
+        }
+
+        .contact-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin: 0 0 1.5rem 0;
+            line-height: 1.2;
+        }
+
+        .contact-section > p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #666;
+            line-height: 1.8;
+            margin: 0 0 3rem 0;
+            max-width: 600px;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: #555;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            transform: translateY(-5px);
+            color: #333;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-link:hover .contact-icon {
+            background-color: #e0e0e0;
+        }
+
+        .contact-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: #555;
+        }
+
+        .contact-link span {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .contact-section footer {
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .contact-section footer p {
+            font-size: 0.9rem;
+            color: #999;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .contact-section h2 {
+                font-size: 2rem;
+            }
+
+            .contact-links {
+                gap: 1.5rem;
+            }
+
+            .contact-icon {
+                width: 45px;
+                height: 45px;
+            }
+
+            .contact-icon svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        /* === MEDIA QUERIES CONSOLIDADAS PARA MOBILE === */
+        @media (max-width: 768px) {
+            /* Seção de Introdução */
+            .intro-section {
+                padding: 1.5rem;
+            }
+
+            .intro-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .intro-section p {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .scroll-prompt {
+                font-size: 0.85rem;
+            }
+
+            /* Personagens - Ajuste do tamanho para evitar overflow */
+            .character {
+                max-width: 100vw;
+                max-height: 80vh; /* Reduz um pouco para caber melhor */
+            }
+
+            /* Seções de Desafio */
+            .challenge-section {
+                padding: 4rem 1.5rem 3rem;
+                background-size: 15px 15px; /* Grid menor em mobile */
+            }
+
+            .challenge-header {
+                margin-bottom: 2rem;
+            }
+
+            .challenge-title {
+                font-size: 2rem;
+            }
+
+            .challenge-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .challenge-content-box {
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .challenge-content-box p {
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            /* Gallery - 1 coluna em mobile */
+            .challenge-gallery {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            /* Menu - ajuste do botão */
+            .menu-button {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+                top: 15px;
+                right: 15px;
+            }
+
+            .menu-close {
+                width: 45px;
+                height: 45px;
+                top: 15px;
+                right: 15px;
+            }
+
+            /* Seção de Contato */
+            .contact-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .contact-section h2 {
+                font-size: 2rem;
+            }
+
+            .contact-section > p {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .contact-links {
+                gap: 1.5rem;
+            }
+
+            .contact-icon {
+                width: 45px;
+                height: 45px;
+            }
+
+            .contact-icon svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .contact-link span {
+                font-size: 0.85rem;
+            }
+
+            .contact-section footer p {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* === MEDIA QUERY PARA TELAS MUITO PEQUENAS === */
+        @media (max-width: 480px) {
+            .intro-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .intro-section p {
+                font-size: 0.9rem;
+            }
+
+            .challenge-title {
+                font-size: 1.7rem;
+            }
+
+            .challenge-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .contact-section h2 {
+                font-size: 1.7rem;
+            }
+
+            .contact-links {
+                gap: 1.2rem;
+            }
+
+            .contact-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .contact-icon svg {
+                width: 18px;
+                height: 18px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- MENU DE NAVEGAÇÃO -->
+    <button id="menu-toggle" class="menu-button" aria-label="Abrir menu">☰</button>
+    
+    <nav id="menu-overlay" class="menu-overlay hidden">
+        <button class="menu-close" aria-label="Fechar menu">✕</button>
+        <div class="menu-container">
+            <ul class="menu-list">
+                <li>
+                    <a href="#intro" data-index="0">
+                        <span class="menu-circle" style="background-color: #999;">•</span>
+                        <span class="menu-text">Introdução</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#challenge-01" data-index="1">
+                        <span class="menu-circle" style="background-color: #A89BCA;">01</span>
+                        <span class="menu-text">Desafio 01</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#challenge-02" data-index="2">
+                        <span class="menu-circle" style="background-color: #FF9FB3;">02</span>
+                        <span class="menu-text">Desafio 02</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#challenge-03" data-index="3">
+                        <span class="menu-circle" style="background-color: #8DD5E7;">03</span>
+                        <span class="menu-text">Desafio 03</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#challenge-04" data-index="4">
+                        <span class="menu-circle" style="background-color: #4A6FA5;">04</span>
+                        <span class="menu-text">Desafio 04</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#challenge-05" data-index="5">
+                        <span class="menu-circle" style="background-color: #6FB7A5;">05</span>
+                        <span class="menu-text">Desafio 05</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#challenge-06" data-index="6">
+                        <span class="menu-circle" style="background-color: #7FD99A;">06</span>
+                        <span class="menu-text">Desafio 06</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#challenge-07" data-index="7">
+                        <span class="menu-circle" style="background-color: #FF9B71;">07</span>
+                        <span class="menu-text">Desafio 07</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#challenge-08" data-index="8">
+                        <span class="menu-circle" style="background-color: #FFD966;">08</span>
+                        <span class="menu-text">Desafio 08</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#challenge-09" data-index="9">
+                        <span class="menu-circle" style="background-color: #FFB3D9;">09</span>
+                        <span class="menu-text">Desafio 09</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#challenge-10" data-index="10">
+                        <span class="menu-circle" style="background-color: #FFA366;">10</span>
+                        <span class="menu-text">Desafio 10</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#contact" data-index="11">
+                        <span class="menu-circle" style="background-color: #666;">•</span>
+                        <span class="menu-text">Contato</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- SEÇÃO DE INTRODUÇÃO -->
+    <section id="intro" class="intro-section">
+        <h1>Portfólio de Jerbesson Silva da Costa</h1>
+        <p>10 desafios de Direção de Arte para Multimídia. Disciplina da Prof. Pâmela de Castro (Sistemas e Mídias Digitais - UFC). Inspiração: o cotidiano de 日常 (Nichijou).</p>
+        <div class="scroll-prompt">Role para baixo. Vamos ver o que acontece.</div>
+    </section>
+
     <!-- CONTAINER DA ANIMAÇÃO -->
     <div class="scrolly-container">
-        <!-- ATENÇÃO: Nomes dos arquivos corrigidos -->
+        <!-- 10 personagens para os 10 desafios -->
         <img id="char1" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 1">
         <img id="char2" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 2">
+        <img id="char3" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 3">
+        <img id="char4" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 4">
+        <img id="char5" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 5">
+        <img id="char6" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 6">
+        <img id="char7" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 7">
+        <img id="char8" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 8">
+        <img id="char9" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 9">
+        <img id="char10" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 10">
     </div>
 
-    <!-- SEÇÕES DE CONTEÚDO (invisíveis no início) -->
-    <section class="challenge-content" id="content1"></section>
-    <section class="challenge-content" id="content2"></section>
+    <!-- === SEÇÕES DE DESAFIOS === -->
+    
+    <!-- TRANSIÇÃO PERSONAGEM 1 -->
+    <div class="character-transition" id="character-transition-1"></div>
+    
+    <!-- DESAFIO 01 -->
+    <section class="challenge-section" id="challenge-01" data-color="#A89BCA">
+        <div class="challenge-container">
+            <div class="challenge-header">
+                <h2 class="challenge-title">Desafio 01</h2>
+                <h3 class="challenge-subtitle">Imersão e Observação</h3>
+            </div>
+            <div class="challenge-content-box">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="challenge-gallery">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 1">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 2">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 3">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- TRANSIÇÃO PERSONAGEM 2 -->
+    <div class="character-transition" id="character-transition-2"></div>
+
+    <!-- DESAFIO 02 -->
+    <section class="challenge-section" id="challenge-02" data-color="#FF9FB3">
+        <div class="challenge-container">
+            <div class="challenge-header">
+                <h2 class="challenge-title">Desafio 02</h2>
+                <h3 class="challenge-subtitle">Nome do Desafio 02</h3>
+            </div>
+            <div class="challenge-content-box">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="challenge-gallery">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 1">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 2">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 3">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 4">
+        </div>
+    </section>
+
+    <!-- TRANSIÇÃO PERSONAGEM 3 -->
+    <div class="character-transition" id="character-transition-3"></div>
+
+    <!-- DESAFIO 03 -->
+    <section class="challenge-section" id="challenge-03" data-color="#8DD5E7">
+        <div class="challenge-container">
+            <div class="challenge-header">
+                <h2 class="challenge-title">Desafio 03</h2>
+                <h3 class="challenge-subtitle">Nome do Desafio 03</h3>
+            </div>
+            <div class="challenge-content-box">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="challenge-gallery">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 1">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 2">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 3">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- TRANSIÇÃO PERSONAGEM 4 -->
+    <div class="character-transition" id="character-transition-4"></div>
+
+    <!-- DESAFIO 04 -->
+    <section class="challenge-section" id="challenge-04" data-color="#4A6FA5">
+        <div class="challenge-container">
+            <div class="challenge-header">
+                <h2 class="challenge-title">Desafio 04</h2>
+                <h3 class="challenge-subtitle">Nome do Desafio 04</h3>
+            </div>
+            <div class="challenge-content-box">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="challenge-gallery">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 1">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 2">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 3">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- TRANSIÇÃO PERSONAGEM 5 -->
+    <div class="character-transition" id="character-transition-5"></div>
+
+    <!-- DESAFIO 05 -->
+    <section class="challenge-section" id="challenge-05" data-color="#6FB7A5">
+        <div class="challenge-container">
+            <div class="challenge-header">
+                <h2 class="challenge-title">Desafio 05</h2>
+                <h3 class="challenge-subtitle">Nome do Desafio 05</h3>
+            </div>
+            <div class="challenge-content-box">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="challenge-gallery">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 1">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 2">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 3">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- TRANSIÇÃO PERSONAGEM 6 -->
+    <div class="character-transition" id="character-transition-6"></div>
+
+    <!-- DESAFIO 06 -->
+    <section class="challenge-section" id="challenge-06" data-color="#7FD99A">
+        <div class="challenge-container">
+            <div class="challenge-header">
+                <h2 class="challenge-title">Desafio 06</h2>
+                <h3 class="challenge-subtitle">Nome do Desafio 06</h3>
+            </div>
+            <div class="challenge-content-box">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="challenge-gallery">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 1">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 2">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 3">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- TRANSIÇÃO PERSONAGEM 7 -->
+    <div class="character-transition" id="character-transition-7"></div>
+
+    <!-- DESAFIO 07 -->
+    <section class="challenge-section" id="challenge-07" data-color="#FF9B71">
+        <div class="challenge-container">
+            <div class="challenge-header">
+                <h2 class="challenge-title">Desafio 07</h2>
+                <h3 class="challenge-subtitle">Nome do Desafio 07</h3>
+            </div>
+            <div class="challenge-content-box">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="challenge-gallery">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 1">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 2">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 3">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- TRANSIÇÃO PERSONAGEM 8 -->
+    <div class="character-transition" id="character-transition-8"></div>
+
+    <!-- DESAFIO 08 -->
+    <section class="challenge-section" id="challenge-08" data-color="#FFD966">
+        <div class="challenge-container">
+            <div class="challenge-header">
+                <h2 class="challenge-title">Desafio 08</h2>
+                <h3 class="challenge-subtitle">Nome do Desafio 08</h3>
+            </div>
+            <div class="challenge-content-box">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="challenge-gallery">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 1">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 2">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 3">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- TRANSIÇÃO PERSONAGEM 9 -->
+    <div class="character-transition" id="character-transition-9"></div>
+
+    <!-- DESAFIO 09 -->
+    <section class="challenge-section" id="challenge-09" data-color="#FFB3D9">
+        <div class="challenge-container">
+            <div class="challenge-header">
+                <h2 class="challenge-title">Desafio 09</h2>
+                <h3 class="challenge-subtitle">Nome do Desafio 09</h3>
+            </div>
+            <div class="challenge-content-box">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="challenge-gallery">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 1">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 2">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 3">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- TRANSIÇÃO PERSONAGEM 10 -->
+    <div class="character-transition" id="character-transition-10"></div>
+
+    <!-- DESAFIO 10 -->
+    <section class="challenge-section" id="challenge-10" data-color="#FFA366">
+        <div class="challenge-container">
+            <div class="challenge-header">
+                <h2 class="challenge-title">Desafio 10</h2>
+                <h3 class="challenge-subtitle">Nome do Desafio 10</h3>
+            </div>
+            <div class="challenge-content-box">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <div class="challenge-gallery">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 1">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 2">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 3">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f0f0f0' width='400' height='300'/%3E%3Ctext fill='%23999' font-family='sans-serif' font-size='24' x='50%25' y='50%25' text-anchor='middle' dominant-baseline='middle'%3EImagem%3C/text%3E%3C/svg%3E" alt="Projeto 4">
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO DE CONTATO -->
+    <section id="contact" class="contact-section">
+        <h2>Obrigado pela visita</h2>
+        <p>Este portfólio foi desenvolvido como projeto final da disciplina de Direção de Arte para Multimídia, ministrada pela Prof. Pâmela de Castro no curso de Sistemas e Mídias Digitais da UFC. Inspirado na abertura do anime Nichijou, este trabalho celebra o cotidiano extraordinário dos desafios criativos.</p>
+        
+        <div class="contact-links">
+            <!-- GitHub -->
+            <a href="https://github.com/jerbesson" target="_blank" rel="noopener noreferrer" class="contact-link">
+                <div class="contact-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </div>
+                <span>GitHub</span>
+            </a>
+
+            <!-- LinkedIn -->
+            <a href="https://linkedin.com/in/jerbesson" target="_blank" rel="noopener noreferrer" class="contact-link">
+                <div class="contact-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                </div>
+                <span>LinkedIn</span>
+            </a>
+
+            <!-- Behance -->
+            <a href="https://behance.net/jerbesson" target="_blank" rel="noopener noreferrer" class="contact-link">
+                <div class="contact-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988h-6.466v-14.967h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zm-3.466-8.988h3.584c2.508 0 2.906-3-.312-3h-3.272v3zm3.391 3h-3.391v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/>
+                    </svg>
+                </div>
+                <span>Behance</span>
+            </a>
+
+            <!-- Email -->
+            <a href="mailto:jerbesson@example.com" class="contact-link">
+                <div class="contact-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/>
+                    </svg>
+                </div>
+                <span>Email</span>
+            </a>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Jerbesson Silva da Costa. Portfólio desenvolvido para a disciplina de Direção de Arte para Multimídia - UFC.</p>
+        </footer>
+    </section>
 
 
     <script>
         // Seleciona os elementos
         const characters = [
             document.getElementById('char1'),
-            document.getElementById('char2')
+            document.getElementById('char2'),
+            document.getElementById('char3'),
+            document.getElementById('char4'),
+            document.getElementById('char5'),
+            document.getElementById('char6'),
+            document.getElementById('char7'),
+            document.getElementById('char8'),
+            document.getElementById('char9'),
+            document.getElementById('char10')
         ];
         
         // Configurações de zoom para cada personagem
         // Dimensões originais das imagens: 1920x1080
         // Coordenadas de foco (X, Y) em pixels na imagem original
         const zoomConfig = [
-            { x: 690, y: 660 },   // char1: foco no ponto especificado
-            { x: 1200, y: 500 }   // char2: foco no ponto especificado
+            { x: 690, y: 660 },   // char1: PERSONAGEM_01 (foco definido)
+            { x: 1200, y: 500 },  // char2: PERSONAGEM_02 (foco definido)
+            { x: 690, y: 660 },   // char3: PERSONAGEM_01 (mesmas coordenadas)
+            { x: 1200, y: 500 },  // char4: PERSONAGEM_02 (mesmas coordenadas)
+            { x: 690, y: 660 },   // char5: PERSONAGEM_01 (mesmas coordenadas)
+            { x: 1200, y: 500 },  // char6: PERSONAGEM_02 (mesmas coordenadas)
+            { x: 690, y: 660 },   // char7: PERSONAGEM_01 (mesmas coordenadas)
+            { x: 1200, y: 500 },  // char8: PERSONAGEM_02 (mesmas coordenadas)
+            { x: 690, y: 660 },   // char9: PERSONAGEM_01 (mesmas coordenadas)
+            { x: 1200, y: 500 }   // char10: PERSONAGEM_02 (mesmas coordenadas)
         ];
         
         const imageOriginalWidth = 1920;
         const imageOriginalHeight = 1080;
+
+        // Seleciona todas as seções de conteúdo
+        const challengeSections = document.querySelectorAll('.challenge-section');
         
-        window.addEventListener('scroll', () => {
+        // Arrays das divs de transição dos personagens
+        const characterTransitions = [
+            document.getElementById('character-transition-1'),
+            document.getElementById('character-transition-2'),
+            document.getElementById('character-transition-3'),
+            document.getElementById('character-transition-4'),
+            document.getElementById('character-transition-5'),
+            document.getElementById('character-transition-6'),
+            document.getElementById('character-transition-7'),
+            document.getElementById('character-transition-8'),
+            document.getElementById('character-transition-9'),
+            document.getElementById('character-transition-10')
+        ];
+        
+        // === OTIMIZAÇÃO DE PERFORMANCE COM requestAnimationFrame ===
+        let ticking = false;
+
+        function handleScroll() {
             const scrollY = window.scrollY;
             const screenHeight = window.innerHeight;
-
-            // Determina qual seção está ativa com base na rolagem
-            const activeSectionIndex = Math.floor(scrollY / screenHeight);
             
-            // **CORREÇÃO:** Garante que apenas o personagem da seção ativa seja visível
-            // Remove imediatamente a classe 'active' de todos os personagens, depois adiciona ao correto
-            // Isso previne que ambas imagens apareçam ao mesmo tempo ao rolar para cima
-            characters.forEach((char, index) => {
+            // Determina qual personagem deve estar ativo baseado nas transições
+            let activeCharacterIndex = -1;
+            
+            characterTransitions.forEach((transition, index) => {
+                if (!transition) return;
+                
+                const rect = transition.getBoundingClientRect();
+                const transitionTop = scrollY + rect.top;
+                const transitionBottom = transitionTop + transition.offsetHeight;
+                
+                // Se o scroll está dentro desta seção de transição
+                if (scrollY >= transitionTop && scrollY < transitionBottom) {
+                    activeCharacterIndex = index;
+                }
+            });
+            
+            // Esconde todos os personagens
+            characters.forEach((char) => {
                 char.classList.remove('active');
             });
             
-            // Ativa apenas o personagem correspondente à seção atual
-            if (characters[activeSectionIndex]) {
-                characters[activeSectionIndex].classList.add('active');
+            // Se há um personagem ativo, mostra e anima ele
+            if (activeCharacterIndex !== -1 && characters[activeCharacterIndex]) {
+                const activeChar = characters[activeCharacterIndex];
+                const transition = characterTransitions[activeCharacterIndex];
+                const rect = transition.getBoundingClientRect();
+                const transitionTop = scrollY + rect.top;
+                
+                activeChar.classList.add('active');
+                
+                // Calcula o progresso dentro desta seção de transição (0 a 1)
+                const localScrollY = scrollY - transitionTop;
+                const progress = Math.min(localScrollY / screenHeight, 1);
+                
+                // Aplica zoom e fade
+                const isMobile = window.innerWidth < 768;
+                const maxScale = isMobile ? 4 : 6;
+                const scale = 1 + progress * (maxScale - 1);
+                const opacity = 1 - Math.max(0, (progress - 0.9) / 0.1);
+                
+                // Aplica as transformações
+                const focusConfig = zoomConfig[activeCharacterIndex];
+                const imgRect = activeChar.getBoundingClientRect();
+                const currentImgWidth = imgRect.width;
+                const currentImgHeight = imgRect.height;
+                const scaleX = currentImgWidth / imageOriginalWidth;
+                const scaleY = currentImgHeight / imageOriginalHeight;
+                const focusX = focusConfig.x * scaleX;
+                const focusY = focusConfig.y * scaleY;
+                const focusXPercent = (focusX / currentImgWidth) * 100;
+                const focusYPercent = (focusY / currentImgHeight) * 100;
+                
+                activeChar.style.transformOrigin = `${focusXPercent}% ${focusYPercent}%`;
+                activeChar.style.transform = `translateX(-50%) translateY(-50%) scale(${scale})`;
+                activeChar.style.opacity = opacity;
             }
 
-            // Se não houver personagem para a seção atual, saia da função
-            const activeCharacter = characters[activeSectionIndex];
-            if (!activeCharacter) return;
-            
-            // --- CÁLCULO DA ANIMAÇÃO COM ZOOM DIRECIONADO ---
-            
-            // Calcula o progresso da rolagem DENTRO da seção atual (de 0 a 1)
-            const progress = (scrollY % screenHeight) / screenHeight;
+            // Reseta a flag após processar
+            ticking = false;
+        }
 
-            // **ZOOM AINDA MAIOR:** multiplicador aumentado para 5
-            // (1 + progress * 5) => até 6x o tamanho original
-            const scale = 1 + progress * 5;
-            
-            // **OPACIDADE QUASE INSTANTÂNEA:** A imagem fica 100% visível durante 95% do scroll
-            // e desaparece rapidamente nos últimos 5% (transição quase instantânea)
-            const opacity = 1 - Math.max(0, (progress - 0.95) / 0.05);
+        // Event listener otimizado com requestAnimationFrame
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    handleScroll();
+                });
+                ticking = true;
+            }
+        });
 
-            // --- CÁLCULO DO ZOOM DIRECIONADO ---
-            // Pega as dimensões atuais da imagem renderizada na tela
-            const imgRect = activeCharacter.getBoundingClientRect();
-            const currentImgWidth = imgRect.width;
-            const currentImgHeight = imgRect.height;
+        // === APLICAR CORES DOS DESAFIOS ===
+        // Aplica a cor do data-color ao título de cada seção de desafio
+        document.addEventListener('DOMContentLoaded', () => {
+            const challengeSections = document.querySelectorAll('.challenge-section');
             
-            // Calcula a escala entre a imagem original e a renderizada
-            const scaleX = currentImgWidth / imageOriginalWidth;
-            const scaleY = currentImgHeight / imageOriginalHeight;
+            // Aplica cores dos títulos
+            challengeSections.forEach(section => {
+                const color = section.getAttribute('data-color');
+                const title = section.querySelector('.challenge-title');
+                
+                if (color && title) {
+                    title.style.color = color;
+                }
+            });
             
-            // Pega o ponto de foco para esta imagem
-            const focusConfig = zoomConfig[activeSectionIndex];
-            
-            // Converte as coordenadas do ponto de foco para o tamanho renderizado
-            const focusX = focusConfig.x * scaleX;
-            const focusY = focusConfig.y * scaleY;
-            
-            // Calcula a porcentagem do ponto de foco em relação ao tamanho da imagem
-            // (0% a 100% em cada eixo)
-            const focusXPercent = (focusX / currentImgWidth) * 100;
-            const focusYPercent = (focusY / currentImgHeight) * 100;
-            
-            // Define o transform-origin para o ponto de foco específico
-            activeCharacter.style.transformOrigin = `${focusXPercent}% ${focusYPercent}%`;
+            // Torna as seções visíveis por padrão (não depende de Intersection Observer)
+            challengeSections.forEach(section => {
+                section.classList.add('visible');
+            });
+        });
 
-            // Aplica as transformações apenas ao personagem ativo
-            // translateX(-50%) e translateY(-50%) mantêm a imagem centralizada
-            activeCharacter.style.transform = `translateX(-50%) translateY(-50%) scale(${scale})`;
-            activeCharacter.style.opacity = opacity;
+        // === CONTROLE DO MENU DE NAVEGAÇÃO ===
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const menuClose = document.querySelector('.menu-close');
+        const menuLinks = document.querySelectorAll('.menu-list a');
+
+        // Função para abrir o menu
+        function openMenu() {
+            menuOverlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Previne scroll do body
+        }
+
+        // Função para fechar o menu
+        function closeMenu() {
+            menuOverlay.classList.add('hidden');
+            document.body.style.overflow = ''; // Restaura scroll do body
+        }
+
+        // Toggle do menu ao clicar no botão hamburguer
+        menuToggle.addEventListener('click', openMenu);
+
+        // Fechar menu ao clicar no botão de fechar
+        menuClose.addEventListener('click', closeMenu);
+
+        // Fechar menu ao clicar no fundo escuro
+        menuOverlay.addEventListener('click', (e) => {
+            if (e.target === menuOverlay) {
+                closeMenu();
+            }
+        });
+
+        // Fechar menu com tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !menuOverlay.classList.contains('hidden')) {
+                closeMenu();
+            }
+        });
+
+        // Navegação suave ao clicar nos itens do menu
+        menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const menuIndex = parseInt(link.getAttribute('data-index'));
+                
+                // Fecha o menu
+                closeMenu();
+                
+                // === NAVEGAÇÃO BASEADA EM ELEMENTOS REAIS ===
+                // Usa as posições reais dos elementos no DOM
+                
+                let targetScroll;
+                
+                if (menuIndex === 0) {
+                    // Intro
+                    targetScroll = 0;
+                } else if (menuIndex >= 1 && menuIndex <= 10) {
+                    // Desafios - navega para o início da seção do desafio
+                    const challengeId = `challenge-${String(menuIndex).padStart(2, '0')}`;
+                    const challengeElement = document.getElementById(challengeId);
+                    
+                    if (challengeElement) {
+                        const rect = challengeElement.getBoundingClientRect();
+                        targetScroll = window.scrollY + rect.top;
+                    } else {
+                        targetScroll = 0;
+                    }
+                } else if (menuIndex === 11) {
+                    // Contato
+                    const contactElement = document.getElementById('contact');
+                    if (contactElement) {
+                        const rect = contactElement.getBoundingClientRect();
+                        targetScroll = window.scrollY + rect.top;
+                    } else {
+                        targetScroll = 0;
+                    }
+                } else {
+                    targetScroll = 0;
+                }
+                
+                // Scroll suave para a seção
+                window.scrollTo({
+                    top: targetScroll,
+                    behavior: 'smooth'
+                });
+            });
         });
     </script>
 
