@@ -93,6 +93,7 @@
             visibility: hidden; /* Escondidos para não interferir */
             filter: drop-shadow(var(--shadow-soft));
             transition: transform 0.35s ease-out, opacity 0.3s ease-out, visibility 0.3s, filter 0.3s ease;
+            z-index: 100; /* Maior que os títulos (z-index: 1) */
         }
 
         /* Classe que torna o personagem ativo visível e pronto para animar */
@@ -109,6 +110,16 @@
             /* transform-origin será calculado dinamicamente via JS */
         }
 
+        /* === WRAPPER PARA TÍTULO + PERSONAGEM === */
+        .character-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
         /* === SEÇÕES DE TRANSIÇÃO DE PERSONAGEM === */
         .character-transition {
             height: 100vh;
@@ -116,6 +127,56 @@
             max-height: 100vh;
             overflow: hidden;
             position: relative;
+        }
+
+        /* === TÍTULOS NAS SEÇÕES DE PERSONAGEM (ESTILO NICHIJOU) === */
+        .challenge-title-bg {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1; /* Atrás do personagem */
+            pointer-events: none; /* Não interfere no scroll */
+        }
+
+        .title-vertical {
+            writing-mode: vertical-rl;
+            font-family: 'M PLUS Rounded 1c', 'Bebas Neue', 'Arial Black', sans-serif;
+            font-size: clamp(40px, 6vw, 56px);
+            font-weight: 900;
+            color: #FFEB3B;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+            margin: 0;
+            letter-spacing: 0.05em;
+            line-height: 1;
+        }
+
+        .title-details {
+            position: absolute;
+            left: 80px;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .title-subtitle {
+            font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+            font-size: clamp(22px, 3vw, 28px);
+            font-weight: 600;
+            color: #FFF;
+            margin: 0;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+            white-space: nowrap;
+        }
+
+        .title-credit {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: clamp(14px, 2vw, 16px);
+            font-weight: 300;
+            color: #DDD;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
         }
 
         /* === SEÇÃO DE INTRODUÇÃO === */
@@ -635,6 +696,27 @@
                 max-width: 50vw;
                 max-height: 50vh;
             }
+            
+            /* Títulos das seções de personagem - Mobile */
+            .challenge-title-bg {
+                left: 15px;
+            }
+            
+            .title-vertical {
+                font-size: 36px;
+            }
+            
+            .title-details {
+                left: 55px;
+            }
+            
+            .title-subtitle {
+                font-size: 20px;
+            }
+            
+            .title-credit {
+                font-size: 12px;
+            }
 
             /* Seções de Desafio - Tipografia Responsiva */
             .challenge-section {
@@ -744,6 +826,19 @@
             .scroll-prompt {
                 bottom: 20px;
                 font-size: 0.8rem;
+            }
+            
+            /* Títulos das seções - Telas muito pequenas */
+            .challenge-title-bg {
+                left: 10px;
+            }
+            
+            .title-vertical {
+                font-size: 32px;
+            }
+            
+            .title-details {
+                left: 45px;
             }
 
             .challenge-title {
@@ -971,16 +1066,126 @@
     <!-- CONTAINER DA ANIMAÇÃO -->
     <div class="scrolly-container">
         <!-- 10 personagens para os 10 desafios -->
-        <img id="char1" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 1">
-        <img id="char2" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 2">
-        <img id="char3" class="character" src="img/PERSONAGEM_03.png" alt="Personagem 3">
-        <img id="char4" class="character" src="img/PERSONAGEM_04.png" alt="Personagem 4">
-        <img id="char5" class="character" src="img/PERSONAGEM_05.png" alt="Personagem 5">
-        <img id="char6" class="character" src="img/PERSONAGEM_06.png" alt="Personagem 6">
-        <img id="char7" class="character" src="img/PERSONAGEM_07.png" alt="Personagem 7">
-        <img id="char8" class="character" src="img/PERSONAGEM_08.png" alt="Personagem 8">
-        <img id="char9" class="character" src="img/PERSONAGEM_09.png" alt="Personagem 9">
-        <img id="char10" class="character" src="img/PERSONAGEM_10.png" alt="Personagem 10">
+        
+        <!-- Personagem 1 + Título -->
+        <div class="character-wrapper">
+            <div class="challenge-title-bg">
+                <h2 class="title-vertical">DESAFIO 01</h2>
+                <div class="title-details">
+                    <h3 class="title-subtitle">Imersão</h3>
+                    <p class="title-credit">Jerbesson Silva</p>
+                </div>
+            </div>
+            <img id="char1" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 1">
+        </div>
+        
+        <!-- Personagem 2 + Título -->
+        <div class="character-wrapper">
+            <div class="challenge-title-bg">
+                <h2 class="title-vertical">DESAFIO 02</h2>
+                <div class="title-details">
+                    <h3 class="title-subtitle">Observação</h3>
+                    <p class="title-credit">Jerbesson Silva</p>
+                </div>
+            </div>
+            <img id="char2" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 2">
+        </div>
+        
+        <!-- Personagem 3 + Título -->
+        <div class="character-wrapper">
+            <div class="challenge-title-bg">
+                <h2 class="title-vertical">DESAFIO 03</h2>
+                <div class="title-details">
+                    <h3 class="title-subtitle">Conceito</h3>
+                    <p class="title-credit">Jerbesson Silva</p>
+                </div>
+            </div>
+            <img id="char3" class="character" src="img/PERSONAGEM_03.png" alt="Personagem 3">
+        </div>
+        
+        <!-- Personagem 4 + Título -->
+        <div class="character-wrapper">
+            <div class="challenge-title-bg">
+                <h2 class="title-vertical">DESAFIO 04</h2>
+                <div class="title-details">
+                    <h3 class="title-subtitle">Prototipagem</h3>
+                    <p class="title-credit">Jerbesson Silva</p>
+                </div>
+            </div>
+            <img id="char4" class="character" src="img/PERSONAGEM_04.png" alt="Personagem 4">
+        </div>
+        
+        <!-- Personagem 5 + Título -->
+        <div class="character-wrapper">
+            <div class="challenge-title-bg">
+                <h2 class="title-vertical">DESAFIO 05</h2>
+                <div class="title-details">
+                    <h3 class="title-subtitle">Interface</h3>
+                    <p class="title-credit">Jerbesson Silva</p>
+                </div>
+            </div>
+            <img id="char5" class="character" src="img/PERSONAGEM_05.png" alt="Personagem 5">
+        </div>
+        
+        <!-- Personagem 6 + Título -->
+        <div class="character-wrapper">
+            <div class="challenge-title-bg">
+                <h2 class="title-vertical">DESAFIO 06</h2>
+                <div class="title-details">
+                    <h3 class="title-subtitle">Narrativa</h3>
+                    <p class="title-credit">Jerbesson Silva</p>
+                </div>
+            </div>
+            <img id="char6" class="character" src="img/PERSONAGEM_06.png" alt="Personagem 6">
+        </div>
+        
+        <!-- Personagem 7 + Título -->
+        <div class="character-wrapper">
+            <div class="challenge-title-bg">
+                <h2 class="title-vertical">DESAFIO 07</h2>
+                <div class="title-details">
+                    <h3 class="title-subtitle">Experiência</h3>
+                    <p class="title-credit">Jerbesson Silva</p>
+                </div>
+            </div>
+            <img id="char7" class="character" src="img/PERSONAGEM_07.png" alt="Personagem 7">
+        </div>
+        
+        <!-- Personagem 8 + Título -->
+        <div class="character-wrapper">
+            <div class="challenge-title-bg">
+                <h2 class="title-vertical">DESAFIO 08</h2>
+                <div class="title-details">
+                    <h3 class="title-subtitle">Iteração</h3>
+                    <p class="title-credit">Jerbesson Silva</p>
+                </div>
+            </div>
+            <img id="char8" class="character" src="img/PERSONAGEM_08.png" alt="Personagem 8">
+        </div>
+        
+        <!-- Personagem 9 + Título -->
+        <div class="character-wrapper">
+            <div class="challenge-title-bg">
+                <h2 class="title-vertical">DESAFIO 09</h2>
+                <div class="title-details">
+                    <h3 class="title-subtitle">Síntese</h3>
+                    <p class="title-credit">Jerbesson Silva</p>
+                </div>
+            </div>
+            <img id="char9" class="character" src="img/PERSONAGEM_09.png" alt="Personagem 9">
+        </div>
+        
+        <!-- Personagem 10 + Título -->
+        <div class="character-wrapper">
+            <div class="challenge-title-bg">
+                <h2 class="title-vertical">DESAFIO 10</h2>
+                <div class="title-details">
+                    <h3 class="title-subtitle">Reflexão</h3>
+                    <p class="title-credit">Jerbesson Silva</p>
+                </div>
+            </div>
+            <img id="char10" class="character" src="img/PERSONAGEM_10.png" alt="Personagem 10">
+        </div>
     </div>
 
     <!-- === SEÇÕES DE DESAFIOS === -->
@@ -1342,6 +1547,9 @@
             document.getElementById('character-transition-10')
         ];
         
+        // Array dos títulos
+        const characterTitles = document.querySelectorAll('.character-wrapper .challenge-title-bg');
+        
         // === OTIMIZAÇÃO DE PERFORMANCE COM requestAnimationFrame ===
         let ticking = false;
 
@@ -1365,9 +1573,14 @@
                 }
             });
             
-            // Esconde todos os personagens
+            // Esconde todos os personagens e títulos
             characters.forEach((char) => {
                 char.classList.remove('active');
+            });
+            
+            characterTitles.forEach((title) => {
+                title.style.opacity = '0';
+                title.style.visibility = 'hidden';
             });
             
             // Se há um personagem ativo, mostra e anima ele
@@ -1381,6 +1594,13 @@
                 const transitionTop = scrollY + rect.top;
                 
                 activeChar.classList.add('active');
+                
+                // Mostra o título correspondente ao personagem ativo
+                if (characterTitles[activeCharacterIndex]) {
+                    characterTitles[activeCharacterIndex].style.opacity = '1';
+                    characterTitles[activeCharacterIndex].style.visibility = 'visible';
+                    characterTitles[activeCharacterIndex].style.transition = 'opacity 0.3s ease, visibility 0.3s';
+                }
                 
                 // Calcula o progresso dentro desta seção de transição (0 a 1)
                 const localScrollY = scrollY - transitionTop;
