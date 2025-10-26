@@ -146,7 +146,7 @@
             font-family: 'M PLUS Rounded 1c', 'Bebas Neue', 'Arial Black', sans-serif;
             font-size: clamp(48px, 7vw, 64px); /* Aumentei um pouco para mais impacto */
             font-weight: 900;
-            color: #FF9800; /* Cor laranja, como na referência */
+            color: #e7a15b; /* Laranja atualizado */
             /* text-shadow removido */
             margin: 0;
             letter-spacing: 0.05em;
@@ -167,7 +167,7 @@
             font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
             font-size: clamp(24px, 3.5vw, 32px); /* Aumentei */
             font-weight: 700; /* Mais peso */
-            color: #FF9800; /* Mesma cor laranja */
+            color: #e7a15b; /* Laranja atualizado */
             margin: 0;
             /* text-shadow removido */
             white-space: nowrap;
@@ -177,21 +177,21 @@
             font-family: 'Noto Sans JP', sans-serif;
             font-size: clamp(16px, 2.5vw, 20px); /* Aumentei */
             font-weight: 400;
-            color: #FF9800; /* Mesma cor laranja */
+            color: #e7a15b; /* Laranja atualizado */
             margin: 0;
             /* text-shadow removido */
         }
 
         /* === ESTILOS ESPECÍFICOS PARA PERSONAGENS === */
 
-        /* Estilo para Personagem 1 (Yuko) - Laranja, -15deg */
+        /* Estilo para Personagem 1 (Yuko) - Laranja */
         .character-wrapper:not([class*="char-style-"]) .title-vertical,
         .character-wrapper:not([class*="char-style-"]) .title-subtitle,
         .character-wrapper:not([class*="char-style-"]) .title-credit {
-            color: #FF9800;
+            color: #e7a15b;
         }
 
-        /* Estilo para Personagem 2 (Mai) - Verde-limão, +15deg */
+        /* Estilo para Personagem 2 (Mai) - Verde-limão */
         .char-style-2 .challenge-title-bg {
             transform: translate(-50%, -50%) rotate(15deg); /* Rotação para cima */
         }
@@ -199,7 +199,18 @@
         .char-style-2 .title-vertical,
         .char-style-2 .title-subtitle,
         .char-style-2 .title-credit {
-            color: #AEEA00; /* Verde-limão */
+            color: #b7cb48; /* Verde-limão */
+        }
+
+        /* Estilo para Personagem 3 (Mio) - Rosa */
+        .char-style-3 .challenge-title-bg {
+            transform: translate(-50%, -50%) rotate(-180deg) skew(20deg, 20deg);
+        }
+
+        .char-style-3 .title-vertical,
+        .char-style-3 .title-subtitle,
+        .char-style-3 .title-credit {
+            color: #dc94ac; /* Rosa */
         }
 
         /* === SEÇÃO DE INTRODUÇÃO === */
@@ -340,21 +351,44 @@
         }
         
         /* Cores individuais dos títulos - estilo Nichijou */
-        .challenge-title-01,
-        /* .challenge-title-02 terá cor própria */
-        .challenge-title-03,
-        .challenge-title-04,
-        .challenge-title-05,
-        .challenge-title-06,
-        .challenge-title-07,
-        .challenge-title-08,
-        .challenge-title-09,
-        .challenge-title-10 {
-            color: #FF9800 !important; /* Cor laranja padrão */
+        .challenge-title-01 {
+            color: #e7a15b !important; /* Laranja - Personagem 1 */
         }
 
         .challenge-title-02 {
-            color: #AEEA00 !important; /* Verde-limão para consistência com a Mai */
+            color: #b7cb48 !important; /* Verde-limão - Personagem 2 */
+        }
+
+        .challenge-title-03 {
+            color: #dc94ac !important; /* Rosa - Personagem 3 */
+        }
+
+        .challenge-title-04 {
+            color: #884f32 !important; /* Marrom - Personagem 4 */
+        }
+
+        .challenge-title-05 {
+            color: #d5818e !important; /* Rosa suave - Personagem 5 */
+        }
+
+        .challenge-title-06 {
+            color: #aa99c5 !important; /* Roxo - Personagem 6 */
+        }
+
+        .challenge-title-07 {
+            color: #e3755a !important; /* Laranja coral - Personagem 7 */
+        }
+
+        .challenge-title-08 {
+            color: #58a9ac !important; /* Verde água - Personagem 8 */
+        }
+
+        .challenge-title-09 {
+            color: #df8f8e !important; /* Rosa claro - Personagem 9 */
+        }
+
+        .challenge-title-10 {
+            color: #edcd2d !important; /* Amarelo - Personagem 10 */
         }
 
         .challenge-subtitle {
@@ -1121,11 +1155,11 @@
         </div>
         
         <!-- Personagem 3 + Título -->
-        <div class="character-wrapper">
+        <div class="character-wrapper char-style-3">
             <div class="challenge-title-bg">
                 <h2 class="title-vertical">DESAFIO 03</h2>
                 <div class="title-details">
-                    <h3 class="title-subtitle">Conceito</h3>
+                    <h3 class="title-subtitle">Apropriação</h3>
                     <p class="title-credit">Jerbesson Silva</p>
                 </div>
             </div>
@@ -1137,7 +1171,7 @@
             <div class="challenge-title-bg">
                 <h2 class="title-vertical">DESAFIO 04</h2>
                 <div class="title-details">
-                    <h3 class="title-subtitle">Prototipagem</h3>
+                    <h3 class="title-subtitle">Reconstrução</h3>
                     <p class="title-credit">Jerbesson Silva</p>
                 </div>
             </div>
@@ -1149,7 +1183,7 @@
             <div class="challenge-title-bg">
                 <h2 class="title-vertical">DESAFIO 05</h2>
                 <div class="title-details">
-                    <h3 class="title-subtitle">Interface</h3>
+                    <h3 class="title-subtitle">Opinião</h3>
                     <p class="title-credit">Jerbesson Silva</p>
                 </div>
             </div>
@@ -1161,7 +1195,7 @@
             <div class="challenge-title-bg">
                 <h2 class="title-vertical">DESAFIO 06</h2>
                 <div class="title-details">
-                    <h3 class="title-subtitle">Narrativa</h3>
+                    <h3 class="title-subtitle">Debate</h3>
                     <p class="title-credit">Jerbesson Silva</p>
                 </div>
             </div>
@@ -1173,7 +1207,7 @@
             <div class="challenge-title-bg">
                 <h2 class="title-vertical">DESAFIO 07</h2>
                 <div class="title-details">
-                    <h3 class="title-subtitle">Experiência</h3>
+                    <h3 class="title-subtitle">Gestão</h3>
                     <p class="title-credit">Jerbesson Silva</p>
                 </div>
             </div>
@@ -1185,7 +1219,7 @@
             <div class="challenge-title-bg">
                 <h2 class="title-vertical">DESAFIO 08</h2>
                 <div class="title-details">
-                    <h3 class="title-subtitle">Iteração</h3>
+                    <h3 class="title-subtitle">Documentação</h3>
                     <p class="title-credit">Jerbesson Silva</p>
                 </div>
             </div>
@@ -1197,7 +1231,7 @@
             <div class="challenge-title-bg">
                 <h2 class="title-vertical">DESAFIO 09</h2>
                 <div class="title-details">
-                    <h3 class="title-subtitle">Síntese</h3>
+                    <h3 class="title-subtitle">Avaliação</h3>
                     <p class="title-credit">Jerbesson Silva</p>
                 </div>
             </div>
@@ -1209,7 +1243,7 @@
             <div class="challenge-title-bg">
                 <h2 class="title-vertical">DESAFIO 10</h2>
                 <div class="title-details">
-                    <h3 class="title-subtitle">Reflexão</h3>
+                    <h3 class="title-subtitle">Exposição</h3>
                     <p class="title-credit">Jerbesson Silva</p>
                 </div>
             </div>
@@ -1231,8 +1265,8 @@
         </div>
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title challenge-title-01">Desafio 01</h2>
-                <h3 class="challenge-subtitle">Imersão</h3>
+                <h2 class="challenge-title challenge-title-01">Imersão</h2>
+                <h3 class="challenge-subtitle">Desafio 01</h3>
             </div>
             
             <!-- Wrapper para alinhar texto e galeria na mesma largura -->
@@ -1259,8 +1293,8 @@
     <section class="challenge-section" id="challenge-02" data-color="#FF9FB3">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title challenge-title-02">Desafio 02</h2>
-                <h3 class="challenge-subtitle">Análise</h3>
+                <h2 class="challenge-title challenge-title-02">Análise</h2>
+                <h3 class="challenge-subtitle">Desafio 02</h3>
             </div>
             <div class="challenge-content-box">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
@@ -1281,8 +1315,8 @@
     <section class="challenge-section" id="challenge-03" data-color="#8DD5E7">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title challenge-title-03">Desafio 03</h2>
-                <h3 class="challenge-subtitle">Nome do Desafio 03</h3>
+                <h2 class="challenge-title challenge-title-03">Apropriação</h2>
+                <h3 class="challenge-subtitle">Desafio 03</h3>
             </div>
             <div class="challenge-content-box">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
@@ -1309,8 +1343,8 @@
         </div>
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title challenge-title-04">Desafio 04</h2>
-                <h3 class="challenge-subtitle">Nome do Desafio 04</h3>
+                <h2 class="challenge-title challenge-title-04">Reconstrução</h2>
+                <h3 class="challenge-subtitle">Desafio 04</h3>
             </div>
             <div class="challenge-content-box">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
@@ -1332,8 +1366,8 @@
     <section class="challenge-section" id="challenge-05" data-color="#6FB7A5">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title challenge-title-05">Desafio 05</h2>
-                <h3 class="challenge-subtitle">Nome do Desafio 05</h3>
+                <h2 class="challenge-title challenge-title-05">Opinião</h2>
+                <h3 class="challenge-subtitle">Desafio 05</h3>
             </div>
             <div class="challenge-content-box">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
@@ -1355,8 +1389,8 @@
     <section class="challenge-section" id="challenge-06" data-color="#7FD99A">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title challenge-title-06">Desafio 06</h2>
-                <h3 class="challenge-subtitle">Nome do Desafio 06</h3>
+                <h2 class="challenge-title challenge-title-06">Debate</h2>
+                <h3 class="challenge-subtitle">Desafio 06</h3>
             </div>
             <div class="challenge-content-box">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
@@ -1383,8 +1417,8 @@
         </div>
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title challenge-title-07">Desafio 07</h2>
-                <h3 class="challenge-subtitle">Nome do Desafio 07</h3>
+                <h2 class="challenge-title challenge-title-07">Gestão</h2>
+                <h3 class="challenge-subtitle">Desafio 07</h3>
             </div>
             <div class="challenge-content-box">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
@@ -1406,8 +1440,8 @@
     <section class="challenge-section" id="challenge-08" data-color="#FFD966">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title challenge-title-08">Desafio 08</h2>
-                <h3 class="challenge-subtitle">Nome do Desafio 08</h3>
+                <h2 class="challenge-title challenge-title-08">Documentação</h2>
+                <h3 class="challenge-subtitle">Desafio 08</h3>
             </div>
             <div class="challenge-content-box">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
@@ -1429,8 +1463,8 @@
     <section class="challenge-section" id="challenge-09" data-color="#FFB3D9">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title challenge-title-09">Desafio 09</h2>
-                <h3 class="challenge-subtitle">Nome do Desafio 09</h3>
+                <h2 class="challenge-title challenge-title-09">Avaliação</h2>
+                <h3 class="challenge-subtitle">Desafio 09</h3>
             </div>
             <div class="challenge-content-box">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
@@ -1452,8 +1486,8 @@
     <section class="challenge-section" id="challenge-10" data-color="#FFA366">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title challenge-title-10">Desafio 10</h2>
-                <h3 class="challenge-subtitle">Nome do Desafio 10</h3>
+                <h2 class="challenge-title challenge-title-10">Exposição</h2>
+                <h3 class="challenge-subtitle">Desafio 10</h3>
             </div>
             <div class="challenge-content-box">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
@@ -1693,8 +1727,34 @@
                 // Aplica o mesmo scale ao título para que ele acompanhe o zoom
                 if (characterTitles[activeCharacterIndex]) {
                     const title = characterTitles[activeCharacterIndex];
-                    title.style.transform = `translate(-50%, -50%) rotate(-15deg) scale(${scale})`;
-                    title.style.opacity = opacity; // Sincroniza a opacidade também
+                    
+                    // Define a rotação e cor específica para cada personagem
+                    const characterStyles = [
+                        { rotation: -15, color: '#e7a15b' },      // Personagem 1 (Yuko) - Laranja
+                        { rotation: -15, color: '#b7cb48' },      // Personagem 2 (Mai) - Verde-limão
+                        { rotation: 45, color: '#dc94ac' },       // Personagem 3 (Mio) - Rosa
+                        { rotation: 45, color: '#884f32' },      // Personagem 4 - Azul
+                        { rotation: -20, color: '#d5818e' },       // Personagem 5 - Verde água
+                        { rotation: 0, color: '#aa99c5' },      // Personagem 6 - Verde claro
+                        { rotation: 0, color: '#e3755a' },       // Personagem 7 - Laranja coral
+                        { rotation: 30, color: '#58a9ac' },      // Personagem 8 - Amarelo
+                        { rotation: -15, color: '#df8f8e' },       // Personagem 9 - Rosa claro
+                        { rotation: 0, color: '#edcd2d' }       // Personagem 10 - Laranja pêssego
+                    ];
+                    
+                    const style = characterStyles[activeCharacterIndex] || characterStyles[0];
+                    
+                    title.style.transform = `translate(-50%, -50%) rotate(${style.rotation}deg) scale(${scale})`;
+                    title.style.opacity = opacity;
+                    
+                    // Aplica a cor aos elementos do título
+                    const titleVertical = title.querySelector('.title-vertical');
+                    const titleSubtitle = title.querySelector('.title-subtitle');
+                    const titleCredit = title.querySelector('.title-credit');
+                    
+                    if (titleVertical) titleVertical.style.color = style.color;
+                    if (titleSubtitle) titleSubtitle.style.color = style.color;
+                    if (titleCredit) titleCredit.style.color = style.color;
                 }
                 
                 // === ATIVA O CONTEÚDO ===
