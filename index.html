@@ -23,6 +23,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 100;
+            pointer-events: none;
+            background: transparent;
+            transition: background-color 0.3s ease;
+        }
+        
+        .scrolly-container.active {
+            background: #f0f0f0;
         }
 
         /* Estilo base para cada personagem */
@@ -120,7 +128,6 @@
             padding: 100px 40px 80px;
             box-sizing: border-box;
             position: relative;
-            z-index: 10;
             /* Fundo com grid de papel quadriculado */
             background-color: #ffffff;
             background-image: 
@@ -128,7 +135,7 @@
                 linear-gradient(90deg, rgba(200, 200, 200, 0.1) 1px, transparent 1px);
             background-size: 20px 20px;
             opacity: 0;
-            transition: opacity 0.6s ease-out;
+            transition: opacity 0.5s ease-out;
         }
 
         .challenge-section.visible {
@@ -1051,6 +1058,9 @@
         // Seleciona todas as seções de conteúdo
         const challengeSections = document.querySelectorAll('.challenge-section');
         
+        // Seleciona o container dos personagens
+        const scrollyContainer = document.querySelector('.scrolly-container');
+        
         // Arrays das divs de transição dos personagens
         const characterTransitions = [
             document.getElementById('character-transition-1'),
@@ -1095,6 +1105,9 @@
             
             // Se há um personagem ativo, mostra e anima ele
             if (activeCharacterIndex !== -1 && characters[activeCharacterIndex]) {
+                // Ativa o fundo cinza do container
+                scrollyContainer.classList.add('active');
+                
                 const activeChar = characters[activeCharacterIndex];
                 const transition = characterTransitions[activeCharacterIndex];
                 const rect = transition.getBoundingClientRect();
@@ -1127,7 +1140,26 @@
                 activeChar.style.transformOrigin = `${focusXPercent}% ${focusYPercent}%`;
                 activeChar.style.transform = `translateX(-50%) translateY(-50%) scale(${scale})`;
                 activeChar.style.opacity = opacity;
+            } else {
+                // Remove o fundo cinza quando não há personagem ativo
+                scrollyContainer.classList.remove('active');
             }
+            
+            // === CONTROLA VISIBILIDADE DAS SEÇÕES DE CONTEÚDO ===
+            // Revela o conteúdo quando o personagem desaparece (efeito cortina)
+            document.querySelectorAll('.challenge-section').forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                const sectionTop = scrollY + rect.top;
+                const viewportHeight = window.innerHeight;
+                
+                // Se a seção está próxima ou dentro da viewport
+                // Aparece quando o topo da seção está a 80vh da viewport
+                if (scrollY + viewportHeight >= sectionTop + viewportHeight * 0.2) {
+                    section.classList.add('visible');
+                } else {
+                    section.classList.remove('visible');
+                }
+            });
 
             // Reseta a flag após processar
             ticking = false;
@@ -1158,10 +1190,8 @@
                 }
             });
             
-            // Torna as seções visíveis por padrão (não depende de Intersection Observer)
-            challengeSections.forEach(section => {
-                section.classList.add('visible');
-            });
+            // Trigger inicial do handleScroll para configurar visibilidade correta
+            handleScroll();
         });
 
         // === CONTROLE DO MENU DE NAVEGAÇÃO ===
