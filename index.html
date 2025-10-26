@@ -4,12 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teste de Animação V2 - Nichijou</title>
+    
+    <!-- Fontes Google - Estilo Nichijou -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            /* Fundos */
+            --bg-white: #FFFFFF;
+            --bg-gray-light: #F8F8F8;
+            --bg-pastel-pink: #FFF5F5;
+            --bg-pastel-yellow: #FFF9E0;
+            --bg-pastel-green: #F0FFF5;
+            --bg-pastel-blue: #F0F8FF;
+            
+            /* Cores de títulos (para "Desafio 01", "Desafio 02", etc.) */
+            --color-purple: #9B6FD8;
+            --color-pink: #FF69B4;
+            --color-orange: #FF8C42;
+            --color-yellow: #FFD666;
+            --color-green: #B8D666;
+            --color-cyan: #66D9E8;
+            --color-blue: #66B8FF;
+            --color-coral: #FF6B6B;
+            --color-turquoise: #66D9B8;
+            --color-lime: #B8FF66;
+            
+            /* Texto */
+            --text-dark: #333333;
+            --text-medium: #666666;
+            --text-light: #999999;
+            
+            /* Sombras */
+            --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --shadow-hard: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
         body {
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
-            font-family: sans-serif;
+            background-color: var(--bg-white);
+            font-family: 'Noto Sans JP', 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-weight: 400;
+            color: var(--text-dark);
+            line-height: 1.8;
             /* Altura dinâmica: calculada automaticamente pelo conteúdo */
         }
 
@@ -26,11 +66,11 @@
             z-index: 100;
             pointer-events: none;
             background: transparent;
-            transition: background-color 0.3s ease;
+            transition: background 0.3s ease;
         }
         
         .scrolly-container.active {
-            background: #f0f0f0;
+            background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg-gray-light) 100%);
         }
 
         /* Estilo base para cada personagem */
@@ -45,7 +85,8 @@
             /* transform será aplicado via CSS específico de cada imagem e JavaScript */
             opacity: 0; /* Começam invisíveis */
             visibility: hidden; /* Escondidos para não interferir */
-            transition: transform 0.35s ease-out, opacity 0.3s ease-out, visibility 0.3s;
+            filter: drop-shadow(var(--shadow-soft));
+            transition: transform 0.35s ease-out, opacity 0.3s ease-out, visibility 0.3s, filter 0.3s ease;
         }
 
         /* Classe que torna o personagem ativo visível e pronto para animar */
@@ -74,7 +115,7 @@
         /* === SEÇÃO DE INTRODUÇÃO === */
         .intro-section {
             height: 100vh;
-            background-color: #ffffff;
+            background-color: var(--bg-white);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -89,7 +130,7 @@
         .intro-section h1 {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #333;
+            color: var(--text-dark);
             margin: 0 0 1.5rem 0;
             line-height: 1.2;
             max-width: 800px;
@@ -98,7 +139,7 @@
         .intro-section p {
             font-size: 1.1rem;
             font-weight: 400;
-            color: #666;
+            color: var(--text-medium);
             line-height: 1.8;
             margin: 0 0 3rem 0;
             max-width: 700px;
@@ -106,7 +147,7 @@
 
         .scroll-prompt {
             font-size: 0.95rem;
-            color: #999;
+            color: var(--text-light);
             font-weight: 500;
             animation: bounce 2s ease-in-out infinite;
             margin-top: 2rem;
@@ -125,17 +166,20 @@
         .challenge-section {
             min-height: 120vh;
             height: auto;
-            padding: 100px 40px 80px;
+            padding: 120px 60px 100px;
             box-sizing: border-box;
             position: relative;
-            /* Fundo com grid de papel quadriculado */
-            background-color: #ffffff;
-            background-image: 
-                linear-gradient(rgba(200, 200, 200, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(200, 200, 200, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
+            background: var(--bg-white);
             opacity: 0;
             transition: opacity 0.5s ease-out;
+        }
+        
+        .challenge-section:nth-child(odd) {
+            background: var(--bg-white);
+        }
+
+        .challenge-section:nth-child(even) {
+            background: var(--bg-gray-light);
         }
 
         .challenge-section.visible {
@@ -149,39 +193,85 @@
 
         .challenge-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
 
         .challenge-title {
-            font-size: 3rem;
-            font-weight: 700;
-            margin: 0 0 0.5rem 0;
+            font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+            font-weight: 900;
+            font-size: clamp(48px, 8vw, 96px);
+            letter-spacing: 0.02em;
+            margin-bottom: 60px;
             line-height: 1.2;
-            /* A cor será aplicada via JavaScript baseada no data-color */
+            text-transform: uppercase;
+            /* A cor será aplicada via classes específicas */
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
         }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Cores individuais dos títulos - estilo Nichijou */
+        .challenge-title-01 { color: var(--color-purple) !important; }
+        .challenge-title-02 { color: var(--color-pink) !important; }
+        .challenge-title-03 { color: var(--color-cyan) !important; }
+        .challenge-title-04 { color: var(--color-blue) !important; }
+        .challenge-title-05 { color: var(--color-turquoise) !important; }
+        .challenge-title-06 { color: var(--color-green) !important; }
+        .challenge-title-07 { color: var(--color-coral) !important; }
+        .challenge-title-08 { color: var(--color-yellow) !important; }
+        .challenge-title-09 { color: var(--color-orange) !important; }
+        .challenge-title-10 { color: var(--color-lime) !important; }
 
         .challenge-subtitle {
-            font-size: 1.5rem;
+            font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
+            font-size: clamp(20px, 3vw, 28px);
             font-weight: 600;
-            color: #555;
+            color: var(--text-medium);
             margin: 0;
             line-height: 1.4;
+        }
+        
+        .challenge-content {
+            margin-top: 40px;
+        }
+        
+        .challenge-content p {
+            margin-bottom: 28px;
+            font-size: clamp(16px, 2vw, 18px);
+            line-height: 1.9;
+        }
+        
+        .challenge-content h3 {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-weight: 700;
+            font-size: clamp(24px, 3vw, 32px);
+            margin-top: 48px;
+            margin-bottom: 24px;
+            color: var(--text-dark);
         }
 
         .challenge-content-box {
             max-width: 700px;
             margin: 0 auto 60px;
             padding: 2rem 2.5rem;
-            background-color: #ffffff;
+            background-color: var(--bg-white);
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border: 2px solid #f0f0f0;
+            box-shadow: var(--shadow-soft);
+            border: 2px solid var(--bg-gray-light);
             line-height: 1.8;
         }
 
         .challenge-content-box p {
             font-size: 1rem;
             line-height: 1.8;
+            color: var(--text-medium);
             color: #555;
             margin: 0 0 20px 0;
         }
@@ -255,7 +345,8 @@
 
         .menu-button:hover {
             transform: scale(1.1);
-            background-color: #555;
+            background: rgba(0, 0, 0, 0.85);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
         }
 
         .menu-overlay {
@@ -334,7 +425,11 @@
 
         .menu-list a:hover {
             background: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
+            transform: translateX(10px);
+        }
+        
+        .menu-list a:hover .menu-text {
+            color: var(--color-cyan);
         }
 
         .menu-circle {
@@ -505,27 +600,30 @@
                 max-height: 80vh; /* Reduz um pouco para caber melhor */
             }
 
-            /* Seções de Desafio */
+            /* Seções de Desafio - Tipografia Responsiva */
             .challenge-section {
-                padding: 4rem 1.5rem 3rem;
-                background-size: 15px 15px; /* Grid menor em mobile */
+                padding: 80px 24px 60px;
             }
 
             .challenge-header {
-                margin-bottom: 2rem;
+                margin-bottom: 2.5rem;
             }
 
             .challenge-title {
-                font-size: 2rem;
+                margin-bottom: 40px;
             }
 
             .challenge-subtitle {
-                font-size: 1.2rem;
+                font-size: clamp(18px, 4vw, 24px);
             }
 
             .challenge-content-box {
                 padding: 1.5rem;
                 margin-bottom: 2rem;
+            }
+            
+            .challenge-content p {
+                margin-bottom: 20px;
             }
 
             .challenge-content-box p {
@@ -628,9 +726,108 @@
                 height: 18px;
             }
         }
+        
+        /* === ELEMENTOS DECORATIVOS NICHIJOU === */
+        .decorative-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.15;
+            transition: transform 0.8s ease, opacity 0.8s ease;
+        }
+
+        .circle-1 {
+            width: 80px;
+            height: 80px;
+            background: var(--color-cyan);
+            top: 15%;
+            left: 10%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .circle-2 {
+            width: 120px;
+            height: 120px;
+            background: var(--color-yellow);
+            top: 60%;
+            right: 15%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .circle-3 {
+            width: 60px;
+            height: 60px;
+            background: var(--color-green);
+            bottom: 20%;
+            left: 25%;
+            animation: float 7s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        /* Loading State */
+        body.loading {
+            overflow: hidden;
+        }
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--bg-gray-light);
+            border-top: 4px solid var(--color-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
 
     <!-- MENU DE NAVEGAÇÃO -->
     <button id="menu-toggle" class="menu-button" aria-label="Abrir menu">☰</button>
@@ -727,14 +924,14 @@
         <!-- 10 personagens para os 10 desafios -->
         <img id="char1" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 1">
         <img id="char2" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 2">
-        <img id="char3" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 3">
-        <img id="char4" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 4">
-        <img id="char5" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 5">
-        <img id="char6" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 6">
-        <img id="char7" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 7">
-        <img id="char8" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 8">
-        <img id="char9" class="character" src="img/PERSONAGEM_01.png" alt="Personagem 9">
-        <img id="char10" class="character" src="img/PERSONAGEM_02.png" alt="Personagem 10">
+        <img id="char3" class="character" src="img/PERSONAGEM_03.png" alt="Personagem 3">
+        <img id="char4" class="character" src="img/PERSONAGEM_04.png" alt="Personagem 4">
+        <img id="char5" class="character" src="img/PERSONAGEM_05.png" alt="Personagem 5">
+        <img id="char6" class="character" src="img/PERSONAGEM_06.png" alt="Personagem 6">
+        <img id="char7" class="character" src="img/PERSONAGEM_07.png" alt="Personagem 7">
+        <img id="char8" class="character" src="img/PERSONAGEM_08.png" alt="Personagem 8">
+        <img id="char9" class="character" src="img/PERSONAGEM_09.png" alt="Personagem 9">
+        <img id="char10" class="character" src="img/PERSONAGEM_10.png" alt="Personagem 10">
     </div>
 
     <!-- === SEÇÕES DE DESAFIOS === -->
@@ -744,9 +941,14 @@
     
     <!-- DESAFIO 01 -->
     <section class="challenge-section" id="challenge-01" data-color="#A89BCA">
+        <div class="decorative-circles">
+            <span class="circle circle-1"></span>
+            <span class="circle circle-2"></span>
+            <span class="circle circle-3"></span>
+        </div>
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title">Desafio 01</h2>
+                <h2 class="challenge-title challenge-title-01">Desafio 01</h2>
                 <h3 class="challenge-subtitle">Imersão e Observação</h3>
             </div>
             <div class="challenge-content-box">
@@ -769,7 +971,7 @@
     <section class="challenge-section" id="challenge-02" data-color="#FF9FB3">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title">Desafio 02</h2>
+                <h2 class="challenge-title challenge-title-02">Desafio 02</h2>
                 <h3 class="challenge-subtitle">Nome do Desafio 02</h3>
             </div>
             <div class="challenge-content-box">
@@ -791,7 +993,7 @@
     <section class="challenge-section" id="challenge-03" data-color="#8DD5E7">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title">Desafio 03</h2>
+                <h2 class="challenge-title challenge-title-03">Desafio 03</h2>
                 <h3 class="challenge-subtitle">Nome do Desafio 03</h3>
             </div>
             <div class="challenge-content-box">
@@ -812,9 +1014,14 @@
 
     <!-- DESAFIO 04 -->
     <section class="challenge-section" id="challenge-04" data-color="#4A6FA5">
+        <div class="decorative-circles">
+            <span class="circle circle-1"></span>
+            <span class="circle circle-2"></span>
+            <span class="circle circle-3"></span>
+        </div>
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title">Desafio 04</h2>
+                <h2 class="challenge-title challenge-title-04">Desafio 04</h2>
                 <h3 class="challenge-subtitle">Nome do Desafio 04</h3>
             </div>
             <div class="challenge-content-box">
@@ -837,7 +1044,7 @@
     <section class="challenge-section" id="challenge-05" data-color="#6FB7A5">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title">Desafio 05</h2>
+                <h2 class="challenge-title challenge-title-05">Desafio 05</h2>
                 <h3 class="challenge-subtitle">Nome do Desafio 05</h3>
             </div>
             <div class="challenge-content-box">
@@ -860,7 +1067,7 @@
     <section class="challenge-section" id="challenge-06" data-color="#7FD99A">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title">Desafio 06</h2>
+                <h2 class="challenge-title challenge-title-06">Desafio 06</h2>
                 <h3 class="challenge-subtitle">Nome do Desafio 06</h3>
             </div>
             <div class="challenge-content-box">
@@ -881,9 +1088,14 @@
 
     <!-- DESAFIO 07 -->
     <section class="challenge-section" id="challenge-07" data-color="#FF9B71">
+        <div class="decorative-circles">
+            <span class="circle circle-1"></span>
+            <span class="circle circle-2"></span>
+            <span class="circle circle-3"></span>
+        </div>
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title">Desafio 07</h2>
+                <h2 class="challenge-title challenge-title-07">Desafio 07</h2>
                 <h3 class="challenge-subtitle">Nome do Desafio 07</h3>
             </div>
             <div class="challenge-content-box">
@@ -906,7 +1118,7 @@
     <section class="challenge-section" id="challenge-08" data-color="#FFD966">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title">Desafio 08</h2>
+                <h2 class="challenge-title challenge-title-08">Desafio 08</h2>
                 <h3 class="challenge-subtitle">Nome do Desafio 08</h3>
             </div>
             <div class="challenge-content-box">
@@ -929,7 +1141,7 @@
     <section class="challenge-section" id="challenge-09" data-color="#FFB3D9">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title">Desafio 09</h2>
+                <h2 class="challenge-title challenge-title-09">Desafio 09</h2>
                 <h3 class="challenge-subtitle">Nome do Desafio 09</h3>
             </div>
             <div class="challenge-content-box">
@@ -952,7 +1164,7 @@
     <section class="challenge-section" id="challenge-10" data-color="#FFA366">
         <div class="challenge-container">
             <div class="challenge-header">
-                <h2 class="challenge-title">Desafio 10</h2>
+                <h2 class="challenge-title challenge-title-10">Desafio 10</h2>
                 <h3 class="challenge-subtitle">Nome do Desafio 10</h3>
             </div>
             <div class="challenge-content-box">
@@ -1040,16 +1252,16 @@
         // Dimensões originais das imagens: 1920x1080
         // Coordenadas de foco (X, Y) em pixels na imagem original
         const zoomConfig = [
-            { x: 690, y: 660 },   // char1: PERSONAGEM_01 (foco definido)
-            { x: 1200, y: 500 },  // char2: PERSONAGEM_02 (foco definido)
-            { x: 690, y: 660 },   // char3: PERSONAGEM_01 (mesmas coordenadas)
-            { x: 1200, y: 500 },  // char4: PERSONAGEM_02 (mesmas coordenadas)
-            { x: 690, y: 660 },   // char5: PERSONAGEM_01 (mesmas coordenadas)
-            { x: 1200, y: 500 },  // char6: PERSONAGEM_02 (mesmas coordenadas)
-            { x: 690, y: 660 },   // char7: PERSONAGEM_01 (mesmas coordenadas)
-            { x: 1200, y: 500 },  // char8: PERSONAGEM_02 (mesmas coordenadas)
-            { x: 690, y: 660 },   // char9: PERSONAGEM_01 (mesmas coordenadas)
-            { x: 1200, y: 500 }   // char10: PERSONAGEM_02 (mesmas coordenadas)
+            { x: 690, y: 660 },   // char1: Coordenadas personalizadas
+            { x: 1200, y: 500 },  // char2: Coordenadas personalizadas
+            { x: 865, y: 520 },   // char3: Coordenadas personalizadas
+            { x: 1040, y: 780 },  // char4: Coordenadas personalizadas
+            { x: 540, y: 630 },   // char5: Coordenadas personalizadas
+            { x: 550, y: 870 },   // char6: Coordenadas personalizadas
+            { x: 1500, y: 660 },  // char7: Coordenadas personalizadas
+            { x: 800, y: 550 },   // char8: Coordenadas personalizadas
+            { x: 860, y: 620 },   // char9: Coordenadas personalizadas
+            { x: 960, y: 180 }    // char10: Coordenadas personalizadas
         ];
         
         const imageOriginalWidth = 1920;
@@ -1175,23 +1387,19 @@
             }
         });
 
-        // === APLICAR CORES DOS DESAFIOS ===
-        // Aplica a cor do data-color ao título de cada seção de desafio
+        // === INICIALIZAÇÃO ===
         document.addEventListener('DOMContentLoaded', () => {
-            const challengeSections = document.querySelectorAll('.challenge-section');
-            
-            // Aplica cores dos títulos
-            challengeSections.forEach(section => {
-                const color = section.getAttribute('data-color');
-                const title = section.querySelector('.challenge-title');
-                
-                if (color && title) {
-                    title.style.color = color;
-                }
-            });
-            
             // Trigger inicial do handleScroll para configurar visibilidade correta
             handleScroll();
+            
+            // Esconder loader após carregar
+            const loader = document.getElementById('loader');
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    document.body.classList.remove('loading');
+                }, 500);
+            });
         });
 
         // === CONTROLE DO MENU DE NAVEGAÇÃO ===
