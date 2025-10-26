@@ -132,20 +132,22 @@
         /* === TÍTULOS NAS SEÇÕES DE PERSONAGEM (ESTILO NICHIJOU) === */
         .challenge-title-bg {
             position: absolute;
-            left: 30px;
+            left: 50%; /* Centralizado horizontalmente */
             top: 50%;
-            transform: translateY(-50%);
+            transform: translate(-50%, -50%) rotate(-15deg); /* Centralizado e rotacionado */
             z-index: 1; /* Atrás do personagem */
             pointer-events: none; /* Não interfere no scroll */
+            transform-origin: center;
+            transition: transform 0.35s ease-out; /* Transição suave para o zoom */
         }
 
         .title-vertical {
             writing-mode: vertical-rl;
             font-family: 'M PLUS Rounded 1c', 'Bebas Neue', 'Arial Black', sans-serif;
-            font-size: clamp(40px, 6vw, 56px);
+            font-size: clamp(48px, 7vw, 64px); /* Aumentei um pouco para mais impacto */
             font-weight: 900;
-            color: #FFEB3B;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+            color: #FF9800; /* Cor laranja, como na referência */
+            /* text-shadow removido */
             margin: 0;
             letter-spacing: 0.05em;
             line-height: 1;
@@ -153,30 +155,51 @@
 
         .title-details {
             position: absolute;
-            left: 80px;
-            top: 0;
+            left: 80px; /* Espaçamento do título vertical */
+            top: 50%; /* Alinhado ao centro */
+            transform: translateY(-50%); /* Centraliza verticalmente */
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px; /* Aumentei o espaçamento */
         }
 
         .title-subtitle {
             font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
-            font-size: clamp(22px, 3vw, 28px);
-            font-weight: 600;
-            color: #FFF;
+            font-size: clamp(24px, 3.5vw, 32px); /* Aumentei */
+            font-weight: 700; /* Mais peso */
+            color: #FF9800; /* Mesma cor laranja */
             margin: 0;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+            /* text-shadow removido */
             white-space: nowrap;
         }
 
         .title-credit {
             font-family: 'Noto Sans JP', sans-serif;
-            font-size: clamp(14px, 2vw, 16px);
-            font-weight: 300;
-            color: #DDD;
+            font-size: clamp(16px, 2.5vw, 20px); /* Aumentei */
+            font-weight: 400;
+            color: #FF9800; /* Mesma cor laranja */
             margin: 0;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+            /* text-shadow removido */
+        }
+
+        /* === ESTILOS ESPECÍFICOS PARA PERSONAGENS === */
+
+        /* Estilo para Personagem 1 (Yuko) - Laranja, -15deg */
+        .character-wrapper:not([class*="char-style-"]) .title-vertical,
+        .character-wrapper:not([class*="char-style-"]) .title-subtitle,
+        .character-wrapper:not([class*="char-style-"]) .title-credit {
+            color: #FF9800;
+        }
+
+        /* Estilo para Personagem 2 (Mai) - Verde-limão, +15deg */
+        .char-style-2 .challenge-title-bg {
+            transform: translate(-50%, -50%) rotate(15deg); /* Rotação para cima */
+        }
+
+        .char-style-2 .title-vertical,
+        .char-style-2 .title-subtitle,
+        .char-style-2 .title-credit {
+            color: #AEEA00; /* Verde-limão */
         }
 
         /* === SEÇÃO DE INTRODUÇÃO === */
@@ -317,16 +340,22 @@
         }
         
         /* Cores individuais dos títulos - estilo Nichijou */
-        .challenge-title-01 { color: var(--color-purple) !important; }
-        .challenge-title-02 { color: var(--color-pink) !important; }
-        .challenge-title-03 { color: var(--color-cyan) !important; }
-        .challenge-title-04 { color: var(--color-blue) !important; }
-        .challenge-title-05 { color: var(--color-turquoise) !important; }
-        .challenge-title-06 { color: var(--color-green) !important; }
-        .challenge-title-07 { color: var(--color-coral) !important; }
-        .challenge-title-08 { color: var(--color-yellow) !important; }
-        .challenge-title-09 { color: var(--color-orange) !important; }
-        .challenge-title-10 { color: var(--color-lime) !important; }
+        .challenge-title-01,
+        /* .challenge-title-02 terá cor própria */
+        .challenge-title-03,
+        .challenge-title-04,
+        .challenge-title-05,
+        .challenge-title-06,
+        .challenge-title-07,
+        .challenge-title-08,
+        .challenge-title-09,
+        .challenge-title-10 {
+            color: #FF9800 !important; /* Cor laranja padrão */
+        }
+
+        .challenge-title-02 {
+            color: #AEEA00 !important; /* Verde-limão para consistência com a Mai */
+        }
 
         .challenge-subtitle {
             font-family: 'M PLUS Rounded 1c', 'Noto Sans JP', sans-serif;
@@ -1080,11 +1109,11 @@
         </div>
         
         <!-- Personagem 2 + Título -->
-        <div class="character-wrapper">
+        <div class="character-wrapper char-style-2">
             <div class="challenge-title-bg">
                 <h2 class="title-vertical">DESAFIO 02</h2>
                 <div class="title-details">
-                    <h3 class="title-subtitle">Observação</h3>
+                    <h3 class="title-subtitle">Análise</h3>
                     <p class="title-credit">Jerbesson Silva</p>
                 </div>
             </div>
@@ -1203,7 +1232,7 @@
         <div class="challenge-container">
             <div class="challenge-header">
                 <h2 class="challenge-title challenge-title-01">Desafio 01</h2>
-                <h3 class="challenge-subtitle">Imersão e Observação</h3>
+                <h3 class="challenge-subtitle">Imersão</h3>
             </div>
             
             <!-- Wrapper para alinhar texto e galeria na mesma largura -->
@@ -1231,7 +1260,7 @@
         <div class="challenge-container">
             <div class="challenge-header">
                 <h2 class="challenge-title challenge-title-02">Desafio 02</h2>
-                <h3 class="challenge-subtitle">Nome do Desafio 02</h3>
+                <h3 class="challenge-subtitle">Análise</h3>
             </div>
             <div class="challenge-content-box">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
@@ -1597,9 +1626,9 @@
                 
                 // Mostra o título correspondente ao personagem ativo
                 if (characterTitles[activeCharacterIndex]) {
-                    characterTitles[activeCharacterIndex].style.opacity = '1';
-                    characterTitles[activeCharacterIndex].style.visibility = 'visible';
-                    characterTitles[activeCharacterIndex].style.transition = 'opacity 0.3s ease, visibility 0.3s';
+                    const title = characterTitles[activeCharacterIndex];
+                    title.style.visibility = 'visible';
+                    // A opacidade e o transform serão controlados no bloco de animação
                 }
                 
                 // Calcula o progresso dentro desta seção de transição (0 a 1)
@@ -1660,6 +1689,13 @@
                 // Aplica o scale e a opacidade
                 activeChar.style.transform = `translateX(-50%) translateY(-50%) scale(${scale})`;
                 activeChar.style.opacity = opacity;
+                
+                // Aplica o mesmo scale ao título para que ele acompanhe o zoom
+                if (characterTitles[activeCharacterIndex]) {
+                    const title = characterTitles[activeCharacterIndex];
+                    title.style.transform = `translate(-50%, -50%) rotate(-15deg) scale(${scale})`;
+                    title.style.opacity = opacity; // Sincroniza a opacidade também
+                }
                 
                 // === ATIVA O CONTEÚDO ===
                 const nextContentSection = challengeSections[activeCharacterIndex];
