@@ -11,6 +11,12 @@
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
+        /* =============================================== */
+        /* MOTION 3: POLIMENTO - Scroll suave no menu */
+        html {
+            scroll-behavior: smooth;
+        }
+        
         :root {
             /* Fundos */
             --bg-white: #FFFFFF;
@@ -171,7 +177,10 @@
             position: relative;
             background: var(--bg-white);
             opacity: 0;
-            transition: opacity 0.5s ease-out;
+            /* Começa 50px para baixo, invisível */
+            transform: translateY(50px);
+            /* Anima a opacidade E a posição */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
         
         .challenge-section:nth-child(odd) {
@@ -184,6 +193,8 @@
 
         .challenge-section.visible {
             opacity: 1;
+            /* Sobe para a posição final (0) */
+            transform: translateY(0);
         }
 
         .challenge-container {
@@ -1251,21 +1262,22 @@
         // Configurações de zoom para cada personagem
         // Dimensões originais das imagens: 1920x1080
         // Coordenadas de foco (X, Y) em pixels na imagem original
+        // ===============================================
+        // Coordenadas de foco JÁ CALCULADAS em porcentagem
+        // (ex: char1 x = 690px / 1920px = 35.9%)
+        // Otimizado para 60fps - sem cálculos pesados no scroll
         const zoomConfig = [
-            { x: 690, y: 660 },   // char1: Coordenadas personalizadas
-            { x: 1200, y: 500 },  // char2: Coordenadas personalizadas
-            { x: 865, y: 520 },   // char3: Coordenadas personalizadas
-            { x: 1040, y: 780 },  // char4: Coordenadas personalizadas
-            { x: 540, y: 630 },   // char5: Coordenadas personalizadas
-            { x: 550, y: 870 },   // char6: Coordenadas personalizadas
-            { x: 1500, y: 660 },  // char7: Coordenadas personalizadas
-            { x: 800, y: 550 },   // char8: Coordenadas personalizadas
-            { x: 860, y: 620 },   // char9: Coordenadas personalizadas
-            { x: 960, y: 180 }    // char10: Coordenadas personalizadas
+            { x: 35.9, y: 61.1 },  // char1: (690, 660)
+            { x: 62.5, y: 46.3 },  // char2: (1200, 500)
+            { x: 45.1, y: 48.1 },  // char3: (865, 520)
+            { x: 54.2, y: 72.2 },  // char4: (1040, 780)
+            { x: 28.1, y: 58.3 },  // char5: (540, 630)
+            { x: 28.6, y: 80.6 },  // char6: (550, 870)
+            { x: 78.1, y: 61.1 },  // char7: (1500, 660)
+            { x: 41.7, y: 50.9 },  // char8: (800, 550)
+            { x: 44.8, y: 57.4 },  // char9: (860, 620)
+            { x: 50.0, y: 16.7 }   // char10: (960, 180)
         ];
-        
-        const imageOriginalWidth = 1920;
-        const imageOriginalHeight = 1080;
 
         // Seleciona todas as seções de conteúdo
         const challengeSections = document.querySelectorAll('.challenge-section');
@@ -1335,44 +1347,31 @@
                 const isMobile = window.innerWidth < 768;
                 const maxScale = isMobile ? 4 : 6;
                 const scale = 1 + progress * (maxScale - 1);
-                const opacity = 1 - Math.max(0, (progress - 0.9) / 0.1);
+                const opacity = 1 - Math.max(0, (progress - 0.7) / 0.3);
                 
-                // Aplica as transformações
+                // ===============================================
+                // Aplica as transformações (SEM CÁLCULOS PESADOS)
+                // Otimizado para 60fps - porcentagens pré-calculadas
                 const focusConfig = zoomConfig[activeCharacterIndex];
-                const imgRect = activeChar.getBoundingClientRect();
-                const currentImgWidth = imgRect.width;
-                const currentImgHeight = imgRect.height;
-                const scaleX = currentImgWidth / imageOriginalWidth;
-                const scaleY = currentImgHeight / imageOriginalHeight;
-                const focusX = focusConfig.x * scaleX;
-                const focusY = focusConfig.y * scaleY;
-                const focusXPercent = (focusX / currentImgWidth) * 100;
-                const focusYPercent = (focusY / currentImgHeight) * 100;
                 
-                activeChar.style.transformOrigin = `${focusXPercent}% ${focusYPercent}%`;
+                // Define o ponto de foco (transform-origin) usando a porcentagem pré-calculada
+                activeChar.style.transformOrigin = `${focusConfig.x}% ${focusConfig.y}%`;
+                
+                // Aplica o scale e a opacidade
                 activeChar.style.transform = `translateX(-50%) translateY(-50%) scale(${scale})`;
                 activeChar.style.opacity = opacity;
+                
+                // === COREOGRAFIA: ENTREGA DE BASTÃO ===
+                // Quando o personagem começa a desaparecer (70%), revela o próximo conteúdo
+                const nextContentSection = challengeSections[activeCharacterIndex];
+                if (progress >= 0.7 && nextContentSection) {
+                    nextContentSection.classList.add('visible');
+                }
             } else {
                 // Remove o fundo cinza quando não há personagem ativo
                 scrollyContainer.classList.remove('active');
             }
             
-            // === CONTROLA VISIBILIDADE DAS SEÇÕES DE CONTEÚDO ===
-            // Revela o conteúdo quando o personagem desaparece (efeito cortina)
-            document.querySelectorAll('.challenge-section').forEach((section, index) => {
-                const rect = section.getBoundingClientRect();
-                const sectionTop = scrollY + rect.top;
-                const viewportHeight = window.innerHeight;
-                
-                // Se a seção está próxima ou dentro da viewport
-                // Aparece quando o topo da seção está a 80vh da viewport
-                if (scrollY + viewportHeight >= sectionTop + viewportHeight * 0.2) {
-                    section.classList.add('visible');
-                } else {
-                    section.classList.remove('visible');
-                }
-            });
-
             // Reseta a flag após processar
             ticking = false;
         }
