@@ -97,6 +97,11 @@
             filter: drop-shadow(var(--shadow-soft));
             transition: transform 0.35s ease-out, opacity 0.3s ease-out, visibility 0.3s, filter 0.3s ease;
             z-index: 100; /* Maior que os títulos (z-index: 1) */
+            /* Otimização GPU para mobile */
+            will-change: transform, opacity;
+            transform: translateZ(0); /* Force GPU acceleration */
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
         /* Classe que torna o personagem ativo visível e pronto para animar */
@@ -109,7 +114,7 @@
         /* Todas as imagens centralizadas */
         #char1, #char2, #char3, #char4, #char5, #char6, #char7, #char8, #char9, #char10 {
             left: 50%;
-            transform: translateX(-50%) translateY(-50%) scale(1);
+            transform: translate3d(-50%, -50%, 0) scale(1);
             /* transform-origin será calculado dinamicamente via JS */
         }
 
@@ -143,6 +148,10 @@
             pointer-events: none; /* Não interfere no scroll */
             transform-origin: center;
             transition: transform 0.35s ease-out; /* Transição suave para o zoom */
+            /* Otimização GPU */
+            will-change: transform, opacity;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         .title-vertical {
@@ -2071,20 +2080,49 @@
         
         // === OTIMIZAÇÃO DE PERFORMANCE COM requestAnimationFrame ===
         let ticking = false;
+        let lastKnownScrollPosition = 0;
+        
+        // Cache de valores para evitar recalcular no scroll
+        let cachedTransitionPositions = [];
+        let cachedScreenHeight = window.innerHeight;
+        let cachedIsMobile = window.innerWidth < 768;
+        
+        // Função para recalcular posições (apenas em resize)
+        function updateCachedPositions() {
+            cachedScreenHeight = window.innerHeight;
+            cachedIsMobile = window.innerWidth < 768;
+            cachedTransitionPositions = characterTransitions.map(transition => {
+                if (!transition) return null;
+                const rect = transition.getBoundingClientRect();
+                return {
+                    top: window.scrollY + rect.top,
+                    height: transition.offsetHeight
+                };
+            });
+        }
+        
+        // Atualiza cache no load e resize (debounced)
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                updateCachedPositions();
+                handleScroll();
+            }, 150);
+        }, { passive: true });
 
         function handleScroll() {
-            const scrollY = window.scrollY;
-            const screenHeight = window.innerHeight;
+            const scrollY = lastKnownScrollPosition;
             
             // Determina qual personagem deve estar ativo baseado nas transições
             let activeCharacterIndex = -1;
             
-            characterTransitions.forEach((transition, index) => {
-                if (!transition) return;
+            // Usa cache ao invés de getBoundingClientRect
+            cachedTransitionPositions.forEach((position, index) => {
+                if (!position) return;
                 
-                const rect = transition.getBoundingClientRect();
-                const transitionTop = scrollY + rect.top;
-                const transitionBottom = transitionTop + transition.offsetHeight;
+                const transitionTop = position.top;
+                const transitionBottom = transitionTop + position.height;
                 
                 // Se o scroll está dentro desta seção de transição
                 if (scrollY >= transitionTop && scrollY < transitionBottom) {
@@ -2108,9 +2146,8 @@
                 scrollyContainer.classList.add('active');
                 
                 const activeChar = characters[activeCharacterIndex];
-                const transition = characterTransitions[activeCharacterIndex];
-                const rect = transition.getBoundingClientRect();
-                const transitionTop = scrollY + rect.top;
+                const position = cachedTransitionPositions[activeCharacterIndex];
+                const transitionTop = position.top;
                 
                 activeChar.classList.add('active');
                 
@@ -2123,7 +2160,7 @@
                 
                 // Calcula o progresso dentro desta seção de transição (0 a 1)
                 const localScrollY = scrollY - transitionTop;
-                const progress = Math.min(localScrollY / screenHeight, 1);
+                const progress = Math.min(localScrollY / cachedScreenHeight, 1);
                 
                 // === NOVOS CÁLCULOS DE ANIMAÇÃO COM ZONAS ===
                 
@@ -2136,8 +2173,7 @@
                 // 80% a 100%: Imagem faz fade-out. Conteúdo faz fade-in.
                 const fadeOutStart = 0.8;
                 
-                const isMobile = window.innerWidth < 768;
-                const maxScale = isMobile ? 4 : 6;
+                const maxScale = cachedIsMobile ? 4 : 6;
                 
                 // --- CALCULA O SCALE ---
                 let scale;
@@ -2176,8 +2212,8 @@
                 // Define o ponto de foco (transform-origin) usando a porcentagem pré-calculada
                 activeChar.style.transformOrigin = `${focusConfig.x}% ${focusConfig.y}%`;
                 
-                // Aplica o scale e a opacidade
-                activeChar.style.transform = `translateX(-50%) translateY(-50%) scale(${scale})`;
+                // Aplica o scale e a opacidade (usando translate3d para GPU)
+                activeChar.style.transform = `translate3d(-50%, -50%, 0) scale(${scale})`;
                 activeChar.style.opacity = opacity;
                 
                 // Aplica o mesmo scale ao título para que ele acompanhe o zoom
@@ -2230,18 +2266,24 @@
             ticking = false;
         }
 
-        // Event listener otimizado com requestAnimationFrame
+        // Event listener otimizado com requestAnimationFrame e passive
         window.addEventListener('scroll', () => {
+            lastKnownScrollPosition = window.scrollY;
+            
             if (!ticking) {
                 window.requestAnimationFrame(() => {
                     handleScroll();
+                    ticking = false;
                 });
                 ticking = true;
             }
-        });
+        }, { passive: true }); // PASSIVE = não bloqueia o scroll
 
         // === INICIALIZAÇÃO ===
         document.addEventListener('DOMContentLoaded', () => {
+            // Inicializa o cache de posições
+            updateCachedPositions();
+            
             // Trigger inicial do handleScroll para configurar visibilidade correta
             handleScroll();
             
