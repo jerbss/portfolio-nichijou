@@ -949,61 +949,6 @@
             }
         }
         
-        /* === ELEMENTOS DECORATIVOS NICHIJOU === */
-        .decorative-circles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.15;
-            transition: transform 0.8s ease, opacity 0.8s ease;
-        }
-
-        .circle-1 {
-            width: 80px;
-            height: 80px;
-            background: var(--color-cyan);
-            top: 15%;
-            left: 10%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .circle-2 {
-            width: 120px;
-            height: 120px;
-            background: var(--color-yellow);
-            top: 60%;
-            right: 15%;
-            animation: float 8s ease-in-out infinite reverse;
-        }
-
-        .circle-3 {
-            width: 60px;
-            height: 60px;
-            background: var(--color-green);
-            bottom: 20%;
-            left: 25%;
-            animation: float 7s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-        }
-        
         /* Loading State */
         body.loading {
             overflow: hidden;
@@ -1276,11 +1221,6 @@
     
     <!-- DESAFIO 01 -->
     <section class="challenge-section" id="challenge-01" data-color="#A89BCA">
-        <div class="decorative-circles">
-            <span class="circle circle-1"></span>
-            <span class="circle circle-2"></span>
-            <span class="circle circle-3"></span>
-        </div>
         <div class="challenge-container">
             <div class="challenge-header">
                 <h2 class="challenge-title challenge-title-01">Imersão</h2>
@@ -1357,17 +1297,12 @@
 
     <!-- DESAFIO 04 -->
     <section class="challenge-section" id="challenge-04" data-color="#4A6FA5">
-        <div class="decorative-circles">
-            <span class="circle circle-1"></span>
-            <span class="circle circle-2"></span>
-            <span class="circle circle-3"></span>
-        </div>
         <div class="challenge-container">
             <div class="challenge-header">
                 <h2 class="challenge-title challenge-title-04">Reconstrução</h2>
                 <h3 class="challenge-subtitle">Desafio 04</h3>
             </div>
-            <div class="challenge-content-box">                
+            <div class="challenge-content-box">,                
                 <p>Pra esse desafio, eu precisei misturar <em>Stardew Valley</em>, K-Pop e algo educativo. A ideia foi pegar a mecânica de gestão e grind do Stardew (que eu nunca tinha jogado) e adaptar pro universo K-pop, mantendo a pressão real da indústria.</p>
                 
                 <p>A fazenda virou um estúdio de treinamento em Seul. Em vez de barra de energia pra plantar, você tem uma barra de <strong>"Foco"</strong> pra treinar. E o mais importante: você não começa com dinheiro. Você começa com uma <strong>DÍVIDA</strong> pesada com a gravadora, e o objetivo é quitar isso enquanto sobrevive às avaliações mensais pra não ser demitido.</p>
@@ -1446,11 +1381,6 @@
 
     <!-- DESAFIO 07 -->
     <section class="challenge-section" id="challenge-07" data-color="#FF9B71">
-        <div class="decorative-circles">
-            <span class="circle circle-1"></span>
-            <span class="circle circle-2"></span>
-            <span class="circle circle-3"></span>
-        </div>
         <div class="challenge-container">
             <div class="challenge-header">
                 <h2 class="challenge-title challenge-title-07">Gestão</h2>
