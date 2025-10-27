@@ -1916,14 +1916,25 @@
                     targetScroll = 0;
                     console.log('📍 Navegando para:', 'Intro', '| targetScroll:', targetScroll);
                 } else if (menuIndex >= 1 && menuIndex <= 10) {
-                    // Desafios - navega para o início da seção do desafio
+                    // Desafios - navega para o TÍTULO do desafio (não para o topo da seção)
                     const challengeId = `challenge-${String(menuIndex).padStart(2, '0')}`;
                     const challengeElement = document.getElementById(challengeId);
                     
                     if (challengeElement) {
-                        const rect = challengeElement.getBoundingClientRect();
-                        targetScroll = window.scrollY + rect.top;
-                        console.log('📍 Navegando para:', challengeId, '| Element found:', !!challengeElement, '| rect.top:', rect.top, '| window.scrollY:', window.scrollY, '| targetScroll:', targetScroll);
+                        // Busca o título dentro da seção
+                        const titleElement = challengeElement.querySelector('.challenge-title');
+                        
+                        if (titleElement) {
+                            // Navega para o título, garantindo que ele apareça visível
+                            const rect = titleElement.getBoundingClientRect();
+                            targetScroll = window.scrollY + rect.top - 100; // -100px para dar um respiro no topo
+                            console.log('📍 Navegando para:', challengeId, '| Título encontrado | rect.top:', rect.top, '| window.scrollY:', window.scrollY, '| targetScroll:', targetScroll);
+                        } else {
+                            // Fallback: se não encontrar o título, vai para a seção mesmo
+                            const rect = challengeElement.getBoundingClientRect();
+                            targetScroll = window.scrollY + rect.top;
+                            console.log('📍 Navegando para:', challengeId, '| Título NÃO encontrado, usando seção | targetScroll:', targetScroll);
+                        }
                     } else {
                         targetScroll = 0;
                         console.warn('⚠️ Elemento não encontrado:', challengeId);
