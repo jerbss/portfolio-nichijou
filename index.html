@@ -1921,6 +1921,9 @@
                     const challengeElement = document.getElementById(challengeId);
                     
                     if (challengeElement) {
+                        // FORÇA A VISIBILIDADE DO CONTEÚDO ao navegar via menu
+                        challengeElement.classList.add('visible');
+                        
                         // Busca o título dentro da seção
                         const titleElement = challengeElement.querySelector('.challenge-title');
                         
