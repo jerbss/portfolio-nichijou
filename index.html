@@ -801,7 +801,17 @@
             
             /* Títulos das seções de personagem - Mobile */
             .challenge-title-bg {
-                left: 15px;
+                left: 50%; /* Mantém centralizado */
+                transform: translate(-50%, -50%) rotate(-15deg); /* Centralizado com rotação */
+            }
+            
+            /* Ajustes específicos por rotação para garantir visibilidade total */
+            .char-style-2 .challenge-title-bg {
+                transform: translate(-50%, -50%) rotate(15deg);
+            }
+            
+            .char-style-3 .challenge-title-bg {
+                transform: translate(-50%, -50%) rotate(-180deg) skew(20deg, 20deg);
             }
             
             .title-vertical {
@@ -933,7 +943,17 @@
             
             /* Títulos das seções - Telas muito pequenas */
             .challenge-title-bg {
-                left: 10px;
+                left: 50%; /* Mantém centralizado */
+                transform: translate(-50%, -50%) rotate(-15deg);
+            }
+            
+            /* Ajustes específicos por rotação */
+            .char-style-2 .challenge-title-bg {
+                transform: translate(-50%, -50%) rotate(15deg);
+            }
+            
+            .char-style-3 .challenge-title-bg {
+                transform: translate(-50%, -50%) rotate(-180deg) skew(20deg, 20deg);
             }
             
             .title-vertical {
@@ -1008,6 +1028,281 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        
+        /* =============================================== */
+        /* LIGHTBOX / GALERIA MODAL */
+        /* =============================================== */
+        
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            animation: lightboxFadeIn 0.25s ease;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        @keyframes lightboxFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 85vw;
+            max-height: 85vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* ==================== DESKTOP CONTROLS ==================== */
+        
+        /* Botão Fechar (X) - Desktop */
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 10001;
+        }
+        
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .lightbox-close:active {
+            transform: scale(0.95);
+        }
+        
+        .lightbox-close::before,
+        .lightbox-close::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            background: white;
+            border-radius: 1px;
+        }
+        
+        .lightbox-close::before {
+            transform: rotate(45deg);
+        }
+        
+        .lightbox-close::after {
+            transform: rotate(-45deg);
+        }
+        
+        /* Setas de Navegação - Desktop (laterais) */
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            z-index: 10001;
+        }
+        
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-50%) scale(1.05);
+        }
+        
+        .lightbox-nav:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+        
+        .lightbox-nav.prev {
+            left: 40px;
+        }
+        
+        .lightbox-nav.next {
+            right: 40px;
+        }
+        
+        .lightbox-nav::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-left: 2px solid white;
+            border-bottom: 2px solid white;
+        }
+        
+        .lightbox-nav.prev::before {
+            transform: rotate(45deg);
+            margin-left: 3px;
+        }
+        
+        .lightbox-nav.next::before {
+            transform: rotate(-135deg);
+            margin-right: 3px;
+        }
+        
+        /* Contador - Desktop */
+        .lightbox-counter {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 400;
+            z-index: 10001;
+            letter-spacing: 1px;
+        }
+        
+        /* ==================== MOBILE CONTROLS ==================== */
+        
+        @media (max-width: 768px) {
+            .lightbox-content {
+                max-width: 95vw;
+                max-height: 75vh;
+            }
+            
+            .lightbox-image {
+                max-height: 75vh;
+                border-radius: 6px;
+            }
+            
+            /* Botão Fechar - Mobile (maior e mais acessível) */
+            .lightbox-close {
+                top: 20px;
+                right: 20px;
+                width: 54px;
+                height: 54px;
+            }
+            
+            .lightbox-close::before,
+            .lightbox-close::after {
+                width: 22px;
+            }
+            
+            /* Setas movem para BAIXO no mobile (thumb zone) */
+            .lightbox-nav {
+                top: auto;
+                bottom: 30px;
+                transform: none;
+                width: 60px;
+                height: 60px;
+            }
+            
+            .lightbox-nav:hover {
+                transform: scale(1.05);
+            }
+            
+            .lightbox-nav:active {
+                transform: scale(0.95);
+            }
+            
+            .lightbox-nav.prev {
+                left: 20px;
+            }
+            
+            .lightbox-nav.next {
+                right: 20px;
+            }
+            
+            .lightbox-nav.prev::before {
+                margin-left: 2px;
+            }
+            
+            .lightbox-nav.next::before {
+                margin-right: 2px;
+            }
+            
+            /* Contador - Mobile (sobe para não conflitar com setas) */
+            .lightbox-counter {
+                bottom: 110px;
+                padding: 8px 18px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Extra pequeno (iPhone SE, etc) */
+        @media (max-width: 400px) {
+            .lightbox-close {
+                width: 50px;
+                height: 50px;
+                top: 15px;
+                right: 15px;
+            }
+            
+            .lightbox-nav {
+                width: 56px;
+                height: 56px;
+                bottom: 25px;
+            }
+            
+            .lightbox-nav.prev {
+                left: 15px;
+            }
+            
+            .lightbox-nav.next {
+                right: 15px;
+            }
+            
+            .lightbox-counter {
+                bottom: 100px;
+                font-size: 0.85rem;
+                padding: 7px 16px;
+            }
+        }
+        
+        /* Adiciona cursor pointer e efeito sutil nas imagens da galeria */
+        .challenge-gallery img {
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-radius: 8px;
+        }
+        
+        .challenge-gallery img:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .challenge-gallery img:active {
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -1577,8 +1872,146 @@
         </footer>
     </section>
 
+    <!-- LIGHTBOX MODAL -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-close" id="lightbox-close"></div>
+        <div class="lightbox-nav prev" id="lightbox-prev"></div>
+        <div class="lightbox-content">
+            <img src="" alt="" class="lightbox-image" id="lightbox-image">
+        </div>
+        <div class="lightbox-nav next" id="lightbox-next"></div>
+        <div class="lightbox-counter" id="lightbox-counter">1 / 1</div>
+    </div>
 
     <script>
+        // ===============================================
+        // LIGHTBOX / GALERIA MODAL
+        // ===============================================
+        
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightbox-image');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const lightboxPrev = document.getElementById('lightbox-prev');
+        const lightboxNext = document.getElementById('lightbox-next');
+        const lightboxCounter = document.getElementById('lightbox-counter');
+        
+        let currentGallery = [];
+        let currentIndex = 0;
+        
+        // Função para abrir o lightbox
+        function openLightbox(images, index) {
+            currentGallery = images;
+            currentIndex = index;
+            updateLightbox();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Impede scroll do body
+        }
+        
+        // Função para fechar o lightbox
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = ''; // Restaura scroll
+        }
+        
+        // Função para atualizar a imagem no lightbox
+        function updateLightbox() {
+            lightboxImage.src = currentGallery[currentIndex].src;
+            lightboxImage.alt = currentGallery[currentIndex].alt;
+            lightboxCounter.textContent = `${currentIndex + 1} / ${currentGallery.length}`;
+            
+            // Esconde setas se houver apenas 1 imagem
+            if (currentGallery.length === 1) {
+                lightboxPrev.style.display = 'none';
+                lightboxNext.style.display = 'none';
+            } else {
+                lightboxPrev.style.display = 'flex';
+                lightboxNext.style.display = 'flex';
+            }
+        }
+        
+        // Navegação: próxima imagem
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % currentGallery.length;
+            updateLightbox();
+        }
+        
+        // Navegação: imagem anterior
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
+            updateLightbox();
+        }
+        
+        // Event Listeners
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxNext.addEventListener('click', nextImage);
+        lightboxPrev.addEventListener('click', prevImage);
+        
+        // Fecha ao clicar fora da imagem
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+        
+        // Navegação por teclado (desktop)
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') prevImage();
+        });
+        
+        // ===============================================
+        // SWIPE GESTURES PARA MOBILE
+        // ===============================================
+        
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        lightboxImage.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        lightboxImage.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50; // Mínimo de pixels para considerar swipe
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) < swipeThreshold) return;
+            
+            if (diff > 0) {
+                // Swipe para esquerda = próxima imagem
+                nextImage();
+            } else {
+                // Swipe para direita = imagem anterior
+                prevImage();
+            }
+        }
+        
+        // Adiciona click listeners em todas as imagens das galerias
+        document.addEventListener('DOMContentLoaded', () => {
+            const galleries = document.querySelectorAll('.challenge-gallery');
+            
+            galleries.forEach(gallery => {
+                const images = Array.from(gallery.querySelectorAll('img'));
+                
+                images.forEach((img, index) => {
+                    img.addEventListener('click', () => {
+                        openLightbox(images, index);
+                    });
+                });
+            });
+        });
+        
+        // ===============================================
+        // ANIMAÇÃO DOS PERSONAGENS (código original)
+        // ===============================================
+        
         // Seleciona os elementos
         const characters = [
             document.getElementById('char1'),
