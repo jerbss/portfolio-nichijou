@@ -127,6 +127,7 @@
             max-height: 100vh;
             overflow: hidden;
             position: relative;
+            background-color: #F8F8F8; /* Mantém o fundo escuro padrão */
         }
 
         /* === TÍTULOS NAS SEÇÕES DE PERSONAGEM (ESTILO NICHIJOU) === */
@@ -252,11 +253,20 @@
             margin: 0.5rem 0;
         }
         
+        .intro-highlight {
+            font-size: clamp(1.3rem, 3vw, 1.8rem) !important;
+            font-weight: 700 !important;
+            color: var(--text-dark) !important;
+            margin: 0.8rem 0 !important;
+            letter-spacing: 0.02em;
+        }
+        
         .intro-subtitle {
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            color: var(--text-light);
+            font-size: clamp(0.9rem, 2vw, 1.1rem) !important;
+            color: var(--text-light) !important;
             margin-top: 1.5rem !important;
             font-style: italic;
+            font-weight: 400 !important;
         }
 
         .scroll-prompt {
@@ -1082,9 +1092,9 @@
     <!-- SEÇÃO DE INTRODUÇÃO -->
     <section id="intro" class="intro-section">
         <div class="intro-content">
-            <h1>Meu portfólio Nichijou</h1>
-            <p>10 desafios de Direção de Arte</p>
-            <p class="intro-subtitle">Inspirado na abertura de Nichijou</p>
+            <h1>Portfólio Nichijou</h1>
+            <p class="intro-highlight">10 Desafios</p>
+            <p class="intro-subtitle">Direção de Arte para Multimídia</p>
         </div>
         <div class="scroll-prompt">Role para começar ↓</div>
     </section>
