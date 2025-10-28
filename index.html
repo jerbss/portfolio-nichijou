@@ -2519,6 +2519,20 @@
                 }
             });
             
+            // === NOVA LÓGICA: Mantém seções visíveis uma vez ativadas ===
+            // Verifica todas as seções de conteúdo e mantém visíveis as que já foram passadas
+            challengeSections.forEach((section, index) => {
+                if (!section) return;
+                
+                const sectionRect = section.getBoundingClientRect();
+                const sectionTop = scrollY + sectionRect.top;
+                
+                // Se já scrollou além do topo desta seção, mantém ela visível
+                if (scrollY >= sectionTop - cachedScreenHeight) {
+                    section.classList.add('visible');
+                }
+            });
+            
             // Esconde todos os personagens e títulos
             characters.forEach((char) => {
                 char.classList.remove('active');
